@@ -355,10 +355,11 @@ def notify(alerts: list[Result], test: bool = False) -> list[str]:
 
 
 def _ntfy(subject: str, body: str, alerts: list[Result], test: bool) -> bool:
-    topic = os.environ.get("NTFY_TOKEN")  # the secret ntfy topic name
+    topic = (os.environ.get("NTFY_TOKEN") or "").strip().strip("/")  # the secret ntfy topic name
     if not topic:
         return False
-    server = os.environ.get("NTFY_SERVER", "https://ntfy.sh").rstrip("/")
+    # Accept either the bare topic name or the full https://ntfy.sh/<topic> link.
+    endpoint = topic if topic.startswith("http") else f"{os.environ.get('NTFY_SERVER', 'https://ntfy.sh').rstrip('/')}/{topic}"
     headers = {"Priority": "urgent", "Tags": "video_game,rotating_light"}
     # One push per product so tapping the notification opens that product page.
     items = [None] if test else alerts
@@ -371,7 +372,7 @@ def _ntfy(subject: str, body: str, alerts: list[Result], test: bool) -> bool:
         else:
             h["Title"] = subject
             msg = body
-        requests.post(f"{server}/{topic}", data=msg.encode("utf-8"), headers=h, timeout=20).raise_for_status()
+        requests.post(endpoint, data=msg.encode("utf-8"), headers=h, timeout=20).raise_for_status()
     return True
 
 
