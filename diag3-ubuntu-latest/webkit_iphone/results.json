@@ -1,0 +1,250 @@
+{
+ "argos_4440006": {
+  "status": 404,
+  "bytes": 1671188,
+  "title": "Something went wrong - Argos.co.uk",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 14.4
+ },
+ "argos_7797426": {
+  "status": 403,
+  "bytes": 456,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 27.9
+ },
+ "argos_4350000": {
+  "status": 403,
+  "bytes": 456,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 28.3
+ },
+ "argos_search": {
+  "status": 403,
+  "bytes": 466,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 27.8
+ },
+ "very_1601238401": {
+  "status": 200,
+  "bytes": 689003,
+  "title": "Playstation PlayStation\u00ae5 Pro Console - 2TB with Grand Theft",
+  "blocked_marker": "",
+  "schema_availability": [
+   "OutOfStock"
+  ],
+  "ps5_pro_mentions": 8,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 16.5
+ },
+ "very_search": {
+  "status": 403,
+  "bytes": 4312,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 27.9
+ },
+ "very_category": {
+  "status": 200,
+  "bytes": 708165,
+  "title": "Very | Womens, Mens and Kids Fashion, Furniture, Electricals",
+  "blocked_marker": "akamai",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 7.1
+ },
+ "littlewoods_search": {
+  "status": 403,
+  "bytes": 4318,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 27.6
+ },
+ "johnlewis_search": {
+  "status": 200,
+  "bytes": 1334842,
+  "title": "\"playstation 5 pro console\" results | John Lewis &amp; Partn",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 5,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 5.8
+ },
+ "johnlewis_product": {
+  "status": 200,
+  "bytes": 309310,
+  "title": "PlayStation 5 Pro Console with DualSense Controller",
+  "blocked_marker": "",
+  "schema_availability": [
+   "OutOfStock"
+  ],
+  "ps5_pro_mentions": 15,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 11.1
+ },
+ "ebuyer_search": {
+  "status": 200,
+  "bytes": 867219,
+  "title": "Search Results",
+  "blocked_marker": "",
+  "schema_availability": [
+   "InStock"
+  ],
+  "ps5_pro_mentions": 1,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 6.3
+ },
+ "scan_product": {
+  "status": 403,
+  "bytes": 28927,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 30.8
+ },
+ "scan_search": {
+  "status": 403,
+  "bytes": 28665,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 29.5
+ },
+ "game_home": {
+  "status": 200,
+  "bytes": 505987,
+  "title": "GAME | Gaming Specialist For Consoles, Games &amp; Accessori",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 8.3
+ },
+ "game_ps5": {
+  "status": 404,
+  "bytes": 411511,
+  "title": "Not Found",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 6.0
+ },
+ "shopto_product": {
+  "status": 200,
+  "bytes": 155474,
+  "title": "Not available in your country | ShopTo.net",
+  "blocked_marker": "captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 8.3
+ },
+ "currys_product": {
+  "status": 403,
+  "bytes": 386449,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 37.7
+ },
+ "ao_home": {
+  "status": 403,
+  "bytes": 28456,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 31.1
+ },
+ "hughes_home": {
+  "status": 200,
+  "bytes": 790492,
+  "title": "Hughes | Washing Machines, Kitchen Appliances, TVs and Fridg",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 4.5
+ },
+ "tesco_search": {
+  "status": 200,
+  "bytes": 977381,
+  "title": "Results for \"playstation 5 pro\" - Tesco Groceries",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 3,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 11.4
+ },
+ "asda_search": {
+  "status": 403,
+  "bytes": 462366,
+  "title": "Search Results for Playstation 5 Pro - ASDA Groceries",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 23.1
+ },
+ "amazon": {
+  "status": 200,
+  "bytes": 3518,
+  "title": "Amazon.co.uk",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 3.1
+ }
+}

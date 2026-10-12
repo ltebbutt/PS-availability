@@ -1,0 +1,248 @@
+{
+ "argos_4440006": {
+  "status": 200,
+  "bytes": 307,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.7
+ },
+ "argos_7797426": {
+  "status": 200,
+  "bytes": 305,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "argos_4350000": {
+  "status": 200,
+  "bytes": 305,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "argos_search": {
+  "status": 200,
+  "bytes": 315,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.7
+ },
+ "very_1601238401": {
+  "status": 200,
+  "bytes": 4273,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.5
+ },
+ "very_search": {
+  "status": 200,
+  "bytes": 4274,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.5
+ },
+ "very_category": {
+  "status": 200,
+  "bytes": 4274,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.8
+ },
+ "littlewoods_search": {
+  "status": 200,
+  "bytes": 4274,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.5
+ },
+ "johnlewis_search": {
+  "status": 200,
+  "bytes": 322740,
+  "title": "\"playstation 5 pro console\" results | John Lewis & Partners",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 5,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 1.2
+ },
+ "johnlewis_product": {
+  "status": 200,
+  "bytes": 254734,
+  "title": "PlayStation 5 Pro Console with DualSense Controller",
+  "blocked_marker": "",
+  "schema_availability": [
+   "OutOfStock"
+  ],
+  "ps5_pro_mentions": 15,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 0.8
+ },
+ "ebuyer_search": {
+  "status": 200,
+  "bytes": 545789,
+  "title": "Search Results",
+  "blocked_marker": "",
+  "schema_availability": [
+   "InStock"
+  ],
+  "ps5_pro_mentions": 1,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 1.4
+ },
+ "scan_product": {
+  "status": 200,
+  "bytes": 81010,
+  "title": "Sony PlayStation 5 Pro Gaming Console (B Chassis) LN164942 -",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 15,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.5
+ },
+ "scan_search": {
+  "status": 200,
+  "bytes": 60489,
+  "title": "Search results for 'playstation 5 pro console' | SCAN UK",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 5,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.6
+ },
+ "game_home": {
+  "status": 200,
+  "bytes": 251675,
+  "title": "GAME | Gaming Specialist For Consoles, Games & Accessories!",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 1.5
+ },
+ "game_ps5": {
+  "status": 200,
+  "bytes": 162718,
+  "title": "Not Found",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 1.0
+ },
+ "shopto_product": {
+  "status": 200,
+  "bytes": 186095,
+  "title": "Buy PlayStation 5 Pro Console Digital (NO DISC) PS5 - ShopTo",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 10,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 3.1
+ },
+ "currys_product": {
+  "status": 200,
+  "bytes": 386257,
+  "title": "Currys PC World",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 1.2
+ },
+ "ao_home": {
+  "status": 200,
+  "bytes": 5764,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "hughes_home": {
+  "status": 200,
+  "bytes": 407542,
+  "title": "Hughes | Washing Machines, Kitchen Appliances, TVs and Fridg",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 1.3
+ },
+ "tesco_search": {
+  "status": 200,
+  "bytes": 63288,
+  "title": "Error",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.5
+ },
+ "asda_search": {
+  "status": 200,
+  "bytes": 5944,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "amazon": {
+  "status": 422,
+  "bytes": 315,
+  "title": "",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ }
+}

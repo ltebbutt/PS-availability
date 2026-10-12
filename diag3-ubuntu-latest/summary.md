@@ -1,0 +1,26 @@
+## Scraping diagnostics on Linux (Linux)
+
+| site | curl_ios | translate | jina | webkit_iphone | firefox_wait | camoufox_wait | amazon_api |
+|---|---|---|---|---|---|---|---|
+| argos_4440006 | HTTP404 404 buy | HTTP400 400 | BLOCKED 200 | HTTP404 404 buy | BLOCKED 200 | NO-DATA 200 buy | NO-DATA 200 buy |
+| argos_7797426 | OK 200 buy | HTTP400 400 | BLOCKED 200 | BLOCKED 403 | BLOCKED 200 | OK 200 buy | OK 200 buy |
+| argos_4350000 | BLOCKED 200 | HTTP400 400 | BLOCKED 200 | BLOCKED 403 | BLOCKED 200 | NO-DATA 200 buy | NO-DATA 200 buy |
+| argos_search | OK 200 buy | HTTP400 400 | BLOCKED 200 | BLOCKED 403 | BLOCKED 200 | OK 200 buy | BLOCKED 403 buy |
+| very_1601238401 | OK 200 OutOfStock | BLOCKED 403 | BLOCKED 200 | OK 200 OutOfStock | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 OutOfStock |
+| very_search | BLOCKED 403 | BLOCKED 403 | BLOCKED 200 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| very_category | NO-DATA 200 buy | BLOCKED 403 | BLOCKED 200 | NO-DATA 200 buy | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| littlewoods_search | BLOCKED 403 | BLOCKED 403 | BLOCKED 200 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| johnlewis_search | PARTIAL 200 | HTTP408 408 | OK 200 buy | PARTIAL 200 | PARTIAL 200 | OK 200 buy | PARTIAL 200 |
+| johnlewis_product | OK 200 OutOfStock | HTTP408 408 | OK 200 OutOfStock | OK 200 OutOfStock | OK 200 OutOfStock | OK 200 OutOfStock | OK 200 OutOfStock |
+| ebuyer_search | OK 200 InStock | HTTP408 408 | OK 200 InStock | OK 200 InStock | OK 200 InStock | OK 200 InStock | OK 200 InStock |
+| scan_product | BLOCKED 403 | PARTIAL 200 | PARTIAL 200 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| scan_search | BLOCKED 403 | PARTIAL 200 | PARTIAL 200 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| game_home | NO-DATA 200 buy | HTTP408 408 | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy |
+| game_ps5 | HTTP404 404 buy | HTTP408 408 | NO-DATA 200 buy | HTTP404 404 buy | HTTP404 404 buy | HTTP404 404 buy | HTTP404 404 buy |
+| shopto_product | BLOCKED 200 | OK 200 buy | OK 200 buy | OK 200 oos | OK 200 oos | OK 200 oos | OK 200 oos |
+| currys_product | BLOCKED 403 | BLOCKED 403 | NO-DATA 200 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| ao_home | BLOCKED 403 | BLOCKED 429 | BLOCKED 200 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| hughes_home | NO-DATA 200 buy | BLOCKED 429 | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy |
+| tesco_search | PARTIAL 200 | BLOCKED 429 | NO-DATA 200 | PARTIAL 200 | PARTIAL 200 | PARTIAL 200 | PARTIAL 200 |
+| asda_search | BLOCKED 403 | BLOCKED 403 | BLOCKED 200 | BLOCKED 403 | OK 200 oos | BLOCKED 403 oos | OK 200 oos |
+| amazon | BLOCKED 200 | BLOCKED 429 | HTTP422 422 | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | OK 200 buy |
