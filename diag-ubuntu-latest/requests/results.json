@@ -1,0 +1,234 @@
+{
+ "amazon": {
+  "status": 200,
+  "bytes": 3805,
+  "title": "Amazon.co.uk",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.8
+ },
+ "argos": {
+  "status": 403,
+  "bytes": 388,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "currys": {
+  "status": 403,
+  "bytes": 482357,
+  "title": "Currys PC World",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "smyths": {
+  "status": 200,
+  "bytes": 1158,
+  "title": "",
+  "blocked_marker": "Incapsula",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.1
+ },
+ "very": {
+  "status": 403,
+  "bytes": 4307,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "littlewoods": {
+  "status": 403,
+  "bytes": 4307,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.3
+ },
+ "johnlewis": {
+  "error": "ReadTimeout: HTTPSConnectionPool(host='www.johnlewis.com', port=443): Read timed out. (read timeout=30)",
+  "status": null
+ },
+ "game": {
+  "error": "ReadTimeout: HTTPSConnectionPool(host='www.game.co.uk', port=443): Read timed out. (read timeout=30)",
+  "status": null
+ },
+ "tesco": {
+  "status": 403,
+  "bytes": 71494,
+  "title": "Error",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "asda": {
+  "status": 403,
+  "bytes": 5869,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.1
+ },
+ "costco": {
+  "status": 200,
+  "bytes": 1190569,
+  "title": "Costco",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 0.3
+ },
+ "ao": {
+  "status": 403,
+  "bytes": 5924,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "ebuyer": {
+  "error": "ReadTimeout: HTTPSConnectionPool(host='www.ebuyer.com', port=443): Read timed out. (read timeout=30)",
+  "status": null
+ },
+ "scan": {
+  "status": 403,
+  "bytes": 5874,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "hughes": {
+  "status": 403,
+  "bytes": 520,
+  "title": "403 Forbidden",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.5
+ },
+ "box": {
+  "status": 200,
+  "bytes": 230715,
+  "title": "Box Technology Store: Buy Gaming Computers, Laptops &amp; Mo",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "psdirect": {
+  "status": 200,
+  "bytes": 214657,
+  "title": "PlayStation\u00ae5 Pro Console - 2TB (UK) | See Price",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 15,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 0.4
+ },
+ "stockinformer": {
+  "status": 403,
+  "bytes": 5800,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "stockgoblin": {
+  "status": 403,
+  "bytes": 5801,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "nowinstock": {
+  "status": 404,
+  "bytes": 17149,
+  "title": "Error - NowInStock.net",
+  "blocked_marker": "captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "pricespy": {
+  "status": 200,
+  "bytes": 155250,
+  "title": "Search at PriceSpy",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.7
+ },
+ "idealo": {
+  "status": 403,
+  "bytes": 3888,
+  "title": "idealo",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.3
+ },
+ "pricerunner": {
+  "status": 202,
+  "bytes": 2383,
+  "title": "",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ }
+}

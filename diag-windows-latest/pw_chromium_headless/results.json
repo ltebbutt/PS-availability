@@ -1,0 +1,234 @@
+{
+ "amazon": {
+  "status": 200,
+  "bytes": 3518,
+  "title": "Amazon.co.uk",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 9.0
+ },
+ "argos": {
+  "status": 403,
+  "bytes": 306,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 5.5
+ },
+ "currys": {
+  "status": 403,
+  "bytes": 386748,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 13.7
+ },
+ "smyths": {
+  "status": 200,
+  "bytes": 999,
+  "title": "",
+  "blocked_marker": "Incapsula",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 5.7
+ },
+ "very": {
+  "status": 403,
+  "bytes": 4312,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 5.9
+ },
+ "littlewoods": {
+  "status": 403,
+  "bytes": 4317,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 6.2
+ },
+ "johnlewis": {
+  "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.johnlewis.com/search?search-term=playstation%205%20pro%20console\nCall log:\n  - navigating to \"https://www.johnlewis.com/search?search-term=plays",
+  "status": null
+ },
+ "game": {
+  "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.game.co.uk/search?q=playstation%205%20pro%20console\nCall log:\n  - navigating to \"https://www.game.co.uk/search?q=playstation%205%20pro%20console",
+  "status": null
+ },
+ "tesco": {
+  "status": 403,
+  "bytes": 314,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 5.7
+ },
+ "asda": {
+  "status": 403,
+  "bytes": 28996,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 14.9
+ },
+ "costco": {
+  "status": 200,
+  "bytes": 1380453,
+  "title": "Search playstation 5 pro | Costco UK",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 8.9
+ },
+ "ao": {
+  "status": 403,
+  "bytes": 29012,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 15.7
+ },
+ "ebuyer": {
+  "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.ebuyer.com/search?q=playstation+5+pro+console\nCall log:\n  - navigating to \"https://www.ebuyer.com/search?q=playstation+5+pro+console\", waiting u",
+  "status": null
+ },
+ "scan": {
+  "status": 403,
+  "bytes": 28985,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 12.8
+ },
+ "hughes": {
+  "status": 403,
+  "bytes": 117,
+  "title": "403 Forbidden",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 6.3
+ },
+ "box": {
+  "status": 200,
+  "bytes": 430095,
+  "title": "Box Technology Store: Buy Gaming Computers, Laptops &amp; Mo",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 10.0
+ },
+ "psdirect": {
+  "status": 200,
+  "bytes": 1136908,
+  "title": "PlayStation\u00ae5 Pro Console - 2TB (UK) | See Price",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 15,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 14.8
+ },
+ "stockinformer": {
+  "status": 200,
+  "bytes": 297879,
+  "title": "PlayStation 5 Pro Console Best Price, Stock Checker &amp; Wh",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 17,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 13.0
+ },
+ "stockgoblin": {
+  "status": 200,
+  "bytes": 171962,
+  "title": "PS5 Pro Console Stock Checker - Find Where It's In Stock!",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 45,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 9.5
+ },
+ "nowinstock": {
+  "status": 404,
+  "bytes": 215455,
+  "title": "Error - NowInStock.net",
+  "blocked_marker": "captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 8.4
+ },
+ "pricespy": {
+  "status": 403,
+  "bytes": 29010,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 12.8
+ },
+ "idealo": {
+  "status": 403,
+  "bytes": 3930,
+  "title": "idealo",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 5.8
+ },
+ "pricerunner": {
+  "status": 202,
+  "bytes": 1395932,
+  "title": "playstation 5 pro - PriceRunner",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 8,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 8.5
+ }
+}

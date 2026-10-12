@@ -1,0 +1,257 @@
+{
+ "amazon": {
+  "status": 200,
+  "bytes": 3518,
+  "title": "Amazon.co.uk",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 10.0
+ },
+ "argos": {
+  "status": 200,
+  "bytes": 308,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 10.2
+ },
+ "currys": {
+  "status": 403,
+  "bytes": 386769,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 8.0
+ },
+ "smyths": {
+  "status": 200,
+  "bytes": 486969,
+  "title": "PlayStation 5 Pro Console - 2TB Digital Edition Slim | Smyth",
+  "blocked_marker": "",
+  "schema_availability": [
+   "OutOfStock"
+  ],
+  "ps5_pro_mentions": 7,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 6.2
+ },
+ "very": {
+  "status": 403,
+  "bytes": 4465,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 7.4
+ },
+ "littlewoods": {
+  "status": 403,
+  "bytes": 4317,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 6.3
+ },
+ "johnlewis": {
+  "status": 200,
+  "bytes": 1305380,
+  "title": "\"playstation 5 pro console\" results | John Lewis &amp; Partn",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 5,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 11.3
+ },
+ "game": {
+  "status": 404,
+  "bytes": 411114,
+  "title": "Not Found",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 9.0
+ },
+ "tesco": {
+  "status": 200,
+  "bytes": 937938,
+  "title": "Results for \"playstation 5 pro console\" - Tesco Groceries",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 3,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 12.6
+ },
+ "asda": {
+  "status": 200,
+  "bytes": 566971,
+  "title": "Search Results for Playstation 5 Pro - ASDA Groceries",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 11.6
+ },
+ "costco": {
+  "status": 200,
+  "bytes": 1380453,
+  "title": "Search playstation 5 pro | Costco UK",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 8.0
+ },
+ "ao": {
+  "status": 403,
+  "bytes": 29054,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 7.7
+ },
+ "ebuyer": {
+  "status": 404,
+  "bytes": 371607,
+  "title": "Not Found",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 8.5
+ },
+ "scan": {
+  "status": 403,
+  "bytes": 29028,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 7.7
+ },
+ "hughes": {
+  "status": 403,
+  "bytes": 117,
+  "title": "403 Forbidden",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 6.2
+ },
+ "box": {
+  "status": 200,
+  "bytes": 430309,
+  "title": "Box Technology Store: Buy Gaming Computers, Laptops &amp; Mo",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 8.0
+ },
+ "psdirect": {
+  "status": 200,
+  "bytes": 378093,
+  "title": "PlayStation\u00ae5 Pro Console - 2TB (UK) | See Price",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 15,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 15.2
+ },
+ "stockinformer": {
+  "status": 200,
+  "bytes": 299232,
+  "title": "PlayStation 5 Pro Console Best Price, Stock Checker &amp; Wh",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 17,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 12.1
+ },
+ "stockgoblin": {
+  "status": 200,
+  "bytes": 172796,
+  "title": "PS5 Pro Console Stock Checker - Find Where It's In Stock!",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 45,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 8.9
+ },
+ "nowinstock": {
+  "status": 404,
+  "bytes": 401304,
+  "title": "Error - NowInStock.net",
+  "blocked_marker": "captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 14.7
+ },
+ "pricespy": {
+  "status": 200,
+  "bytes": 152857,
+  "title": "Search at PriceSpy",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 7.6
+ },
+ "idealo": {
+  "status": 200,
+  "bytes": 3906,
+  "title": "",
+  "blocked_marker": "akamai",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 6.4
+ },
+ "pricerunner": {
+  "status": 200,
+  "bytes": 1396078,
+  "title": "playstation 5 pro - PriceRunner",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 8,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 8.8
+ }
+}

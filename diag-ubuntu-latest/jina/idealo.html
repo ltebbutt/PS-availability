@@ -1,0 +1,26 @@
+<html>
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <meta name="viewport" content="width=device-width">
+ <title>idealo</title>
+ <style>header{background-color:#0a3761;box-sizing:border-box;height:63px;display:flex;align-items:center;justify-content:center}header svg{width:125px}body{margin:0;font-family:Roboto,idealo,"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;color:#2d2d2d;text-align:center;line-height:20px}section{display:flex;height:calc(50vh - 63px);justify-content:center;align-items:center;flex-direction:column}p{margin:0}</style>
+</head>
+<body><header>
+ <a href="https://www.idealo.co.uk/" data-tracking-id="i-header-logo" data-gtm-event="navigation.click" data-gtm-payload="{
+ &quot;event_category&quot;:&quot;navigation&quot;,
+ &quot;event_label&quot;:&quot;navigation.main&quot;,
+ &quot;event_action&quot;:&quot;logo.click&quot;
+ }">
+ <svg class="i-header-logo-image" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 657 200" width="200" height="60" x="0" y="0" /> </a> </header><section><p>Sorry! Something has gone wrong. If the issue persists, please make sure your browser is updated to the latest version.</p>
+ <p>Still having the issue, please <a id="link" href="https://kundenservice.idealo.com/de/contact?topic=access-idealo">reach out</a> to our customer care with reference ID <i><span id="reference-id">0.ec542117.1791832455.b383bf4b</span></i> for further assistance.</p></section>
+<script>
+ const source = document.querySelector("#reference-id");
+ const link = document.querySelector("#link");
+ if (source && link) {
+ const value = source.textContent.trim();
+ const url = new URL(link.href);
+ url.searchParams.set("referenceId", value);
+ link.href = url.toString();
+ }
+</script>
+</body></html>
