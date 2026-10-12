@@ -228,6 +228,7 @@ class PageData:
     links: list[dict]
     cards: list[dict] = field(default_factory=list)
     price_text: str = ""
+    html: str = ""
 
 
 def parse_html(status: int | None, html: str, base_url: str, price_selector: str | None = None) -> PageData:
@@ -271,6 +272,7 @@ def parse_html(status: int | None, html: str, base_url: str, price_selector: str
         links=links,
         cards=cards,
         price_text=price_el.get_text(" ", strip=True) if price_el else "",
+        html=html or "",
     )
 
 
@@ -419,6 +421,7 @@ class Engines:
                 links=await page.eval_on_selector_all("a[href]", LINKS_JS),
                 cards=await page.evaluate(CARDS_JS),
                 price_text=price_text,
+                html=await page.content(),
             )
         finally:
             await page.close()
@@ -461,6 +464,19 @@ def _blocked(data: PageData) -> bool:
     return data.buy_buttons == 0 and bool(BLOCKED_TEXT.search(data.title + "\n" + data.text[:5000]))
 
 
+def _stock_flag(retailer: dict, url: str, html: str) -> str | None:
+    """Retailer-specific stock flags in the page source, e.g. Argos's
+    "globallyOutOfStock". "{id}" in the pattern is replaced by the product number
+    from the URL so recommendations on the same page are ignored."""
+    ids = re.findall(r"\d{5,}", urlsplit(url).path)
+    pid = ids[-1] if ids else ""
+    for key, status in (("html_out_of_stock", "out_of_stock"), ("html_in_stock", "in_stock")):
+        pattern = retailer.get(key)
+        if pattern and re.search(pattern.replace("{id}", pid), html or ""):
+            return status
+    return None
+
+
 async def check_product(run: Run, engines: Engines, retailer: dict, url: str, link_title: str = "") -> Result:
     if url in run.checked:
         return run.checked[url]
@@ -486,6 +502,10 @@ async def check_product(run: Run, engines: Engines, retailer: dict, url: str, li
         res = Result(name, url, "error", title, price, f"HTTP {data.status} - product URL may have changed")
     elif NOT_IN_COUNTRY.search(data.title + "\n" + data.text[:3000]):
         res = Result(name, url, "blocked", title, price, "site blocks visitors outside the UK")
+    elif flag := _stock_flag(retailer, url, data.html):
+        res = Result(name, url, flag, title, price, "retailer's own stock flag")
+        if flag == "in_stock" and not price_ok(price, settings):
+            res.status, res.reason = "out_of_stock", f"in stock but price £{price:.2f} outside range"
     elif not avail and not re.search(settings["title_pattern"], f"{title} {data.title}", re.I):
         # e.g. Very redirects blocked visitors to its homepage, whose text would
         # otherwise be misread as "out of stock".

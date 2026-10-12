@@ -61,11 +61,14 @@ retailers:
     exclude_retailers: [StockX, eBay, EE]
 
   # ---------------- Amazon ----------------
+  # Amazon shows GitHub's servers US availability ("Deliver to United States")
+  # even after setting a UK postcode, so it's covered by Stock Goblin instead.
   - name: Amazon UK
     type: product
     url: https://www.amazon.co.uk/dp/B0DJH2NS6R
     engine: camoufox
     setup: amazon_uk_postcode
+    enabled: false
     price_selector: '#corePrice_feature_div .a-offscreen, #corePriceDisplay_desktop_feature_div .a-offscreen, #apex_desktop .a-offscreen'
 
   # Through Google Translate's proxy Amazon loads but shows US availability.
@@ -77,16 +80,22 @@ retailers:
     price_selector: '#corePrice_feature_div .a-offscreen, #corePriceDisplay_desktop_feature_div .a-offscreen, #apex_desktop .a-offscreen'
 
   # ---------------- Argos (also Sainsbury's) ----------------
-  # Akamai blocks most scrapers; these two engines got real pages back once.
+  # Mobile-Safari curl gets real Argos pages. Argos's own "globallyOutOfStock"
+  # flag for the product is the stock signal.
   - name: Argos (also Sainsbury's)
     type: product
-    url: https://www.argos.co.uk/product/4350000
-    engine: webkit_iphone
+    url: https://www.argos.co.uk/product/7797426
+    engine: curl_ios
+    html_out_of_stock: '"globallyOutOfStock":true[^{}]{0,600}?"partNumber":"{id}"'
+    html_in_stock: '"globallyOutOfStock":false[^{}]{0,600}?"partNumber":"{id}"'
 
   - name: Argos (also Sainsbury's)
-    type: product
-    url: https://www.argos.co.uk/product/4440006
-    engine: camoufox
+    type: search
+    url: https://www.argos.co.uk/search/playstation-5-pro/
+    link_pattern: '/product/\d+'
+    engine: curl_ios
+    html_out_of_stock: '"globallyOutOfStock":true[^{}]{0,600}?"partNumber":"{id}"'
+    html_in_stock: '"globallyOutOfStock":false[^{}]{0,600}?"partNumber":"{id}"'
 
   # ---------------- Currys ----------------
   # Cloudflare blocked every method from GitHub's servers; covered by the trackers.
@@ -108,35 +117,38 @@ retailers:
     engine: camoufox
 
   # ---------------- Very / Littlewoods ----------------
-  - name: Very
-    type: product
-    url: https://www.very.co.uk/playstation-5-pro-console/1601081144.prd
-    engine: webkit_iphone
-
+  # Very's search and category pages are blocked; this product page works with
+  # mobile-Safari curl. (Its other PS5 Pro listing now redirects to the homepage.)
   - name: Very
     type: product
     url: https://www.very.co.uk/playstation-playstationreg5-pro-console-2tb-with-grand-theft-auto-v-amp-disc-drive/1601238401.prd
     engine: curl_ios
 
+  # Littlewoods blocked every method in three rounds of testing.
   - name: Littlewoods
     type: product
     url: https://www.littlewoods.com/playstation-5-pro-console/1601081144.prd
     engine: webkit_iphone
+    enabled: false
 
   # ---------------- John Lewis ----------------
+  - name: John Lewis
+    type: product
+    url: https://www.johnlewis.com/playstation-5-pro-console-with-dualsense-controller/p114409149
+    engine: curl_ios
+
   - name: John Lewis
     type: search
     url: https://www.johnlewis.com/search?search-term=playstation%205%20pro%20console
     link_pattern: '/p\d+'
-    engine: firefox
+    engine: jina
 
   # ---------------- GAME ----------------
-  # GAME answers 404 to non-UK visitors (GitHub's servers are in the US); covered by the trackers.
+  # GAME's homepage and sections load; its PS5 section is /playstation/ps5.
   - name: GAME
     type: search
-    url: https://www.game.co.uk/en/playstation/consoles/ps5/
-    engine: camoufox
-    enabled: false
+    url: https://www.game.co.uk/playstation/ps5
+    engine: curl_ios
 
   # ---------------- PlayStation Direct ----------------
   - name: PlayStation Direct
@@ -148,9 +160,9 @@ retailers:
   # Tesco and Asda don't currently sell the console online, but are checked in case.
   - name: Tesco
     type: search
-    url: https://www.tesco.com/groceries/en-GB/search?query=playstation%205%20pro%20console
+    url: https://www.tesco.com/groceries/en-GB/search?query=playstation%205%20pro
     link_pattern: '/products/'
-    engine: firefox
+    engine: curl_ios
 
   - name: Asda
     type: search
@@ -167,11 +179,14 @@ retailers:
     type: search
     url: https://shop.ee.co.uk/search?q=playstation%205%20pro
 
+  # Ebuyer loads fine; it doesn't list the PS5 Pro at the moment.
   - name: Ebuyer
     type: search
     url: https://www.ebuyer.com/searchresults?descriptionfilter=playstation+5+pro
     engine: firefox
 
+  # Scan's pages load through the reader, but stock is loaded separately by
+  # JavaScript, so this usually reports "unknown".
   - name: Scan
     type: search
     url: https://www.scan.co.uk/search?q=playstation+5+pro+console
@@ -190,7 +205,12 @@ retailers:
     url: https://box.co.uk/p5hehwsny59577-sony-playstation-5-pro-console
     engine: firefox
 
-  # AO (Cloudflare) and Hughes blocked every method; AO doesn't list the console.
+  - name: Hughes
+    type: search
+    url: https://www.hughes.co.uk/search?search=playstation+5+pro
+    engine: curl_ios
+
+  # AO (Cloudflare) blocked every method in three rounds; it doesn't list the console.
   - name: AO.com
     type: search
     url: https://ao.com/l/search/101/99/?search=playstation%205%20pro
