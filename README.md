@@ -12,23 +12,47 @@ alerts your iPhone when one comes back in stock. It can send:
 You can turn on any mix of these. You get one alert per restock, not one every
 5 minutes. If the item is still in stock 6 hours later you get a reminder.
 
-## Retailers checked
+## What's checked, and how
 
-Amazon UK (only when sold by Amazon), Argos (also covers Sainsbury's, which sells
-consoles through Argos), Currys, Smyths Toys, Very, Littlewoods, John Lewis, GAME,
-PlayStation Direct, Tesco, Asda, Costco UK, AO.com, Ebuyer, Scan, ShopTo, Box,
-Hughes and EE.
+Two kinds of source are checked every run:
 
-Most entries are **search pages**. The checker finds every PS5 Pro console
-listing on them (new bundles included) and then checks each product page. To
-decide whether a product is in stock it uses the page's structured data
-(`schema.org` availability), whether an "Add to basket" button can be clicked,
-and wording like "Out of stock".
+**1. Stock trackers.** [StockInformer](https://www.stockinformer.co.uk/checker-playstation-5-pro-console)
+and [Stock Goblin](https://www.stockgoblin.co.uk/products/playstation-5-pro-console)
+already monitor the big retailers from UK connections. Each retailer row on
+their pages becomes its own alert. This is how **Currys, Argos, GAME, ShopTo
+and Amazon** are covered, because those sites block or geo-restrict GitHub's
+US servers. Resale sites (StockX, eBay) are ignored.
+
+**2. Direct checks of retailer sites.** Many UK retailers use anti-bot
+protection, so each site is fetched with the scraper that got through in
+testing (see `diagnose/`):
+
+| Retailer | Method | Status from GitHub (Oct 2026) |
+|---|---|---|
+| Smyths Toys | Camoufox (stealth Firefox) on a virtual screen | ✅ works |
+| Box | Firefox | ✅ works |
+| EE | Chromium | ✅ works |
+| PlayStation Direct | Chromium | ✅ works |
+| John Lewis | Firefox | ✅ works (occasional connection drops) |
+| Tesco, Asda | Firefox | ⚠️ intermittent; neither sells the console online right now |
+| Costco | Chromium | ✅ loads; doesn't list the PS5 Pro right now |
+| Very, Littlewoods | iPhone WebKit / iPhone curl | ⚠️ intermittent; also covered by the trackers |
+| Argos | iPhone WebKit / Camoufox | ❌ usually blocked; trackers show its status |
+| Amazon | Camoufox | ❌ shows US availability; covered by the trackers |
+| Scan | r.jina.ai reader | ⚠️ page loads but stock isn't readable yet |
+| Ebuyer | Firefox | ⚠️ search page loads, listings not picked up yet |
+| Currys, AO, Hughes | none worked | ❌ Currys covered by the trackers |
+| GAME, ShopTo | none worked | ❌ block non-UK visitors; covered by the trackers |
+
+A product counts as in stock if its structured data (`schema.org`) says so, or
+a clickable "Add to basket" button is showing. Out-of-stock wording counts
+against it. Blocked or redirected pages are skipped, so they never send a false
+alert. The same product seen by several sources only alerts once.
 
 It ignores:
 - listings priced above £900, which filters out marketplace scalpers
 - listings priced below £400, which filters out accessories
-- covers, stands and similar accessories
+- covers, stands and similar accessories, plus refurbished or "good as new" units
 
 All of this can be changed in [`retailers.yaml`](retailers.yaml).
 
@@ -95,15 +119,20 @@ Check the summary now and then to see whether a retailer needs its URL updating.
 - **GitHub's schedule is best-effort.** At busy times a "5 minute" schedule can
   slip to 10–20 minutes. Bots on stock-tracking Discord servers will sometimes
   be faster.
-- **Some sites block GitHub's servers.** Retailers such as Amazon, Argos, Currys
-  and Very use bot protection, and GitHub's runners are datacentre IPs in the US.
-  Some checks will therefore show 🚫 *blocked*. A blocked check never sends a
-  false alarm or a false "out of stock". It is just skipped. For the best
-  coverage, run the workflow on a **self-hosted runner** at home: change
-  `runs-on: ubuntu-latest` to `runs-on: self-hosted` and set up a runner on any
-  always-on PC or Raspberry Pi
-  (Settings → Actions → Runners → New self-hosted runner). Your home UK IP is
-  far less likely to be blocked.
+- **Some sites still block GitHub's servers** (see the table above). GitHub's
+  runners are datacentre machines in the US, so Currys, Argos, GAME and ShopTo
+  refuse them or treat them as overseas visitors. The trackers cover those. For
+  direct checks of every site, run the workflow on a **self-hosted runner** at
+  home: change `runs-on: ubuntu-latest` to `runs-on: self-hosted` and set up a
+  runner on any always-on PC or Raspberry Pi
+  (Settings → Actions → Runners → New self-hosted runner). A home UK connection
+  is far less likely to be blocked.
+- **Dry runs.** **Run workflow** with **"Check every site but don't send
+  alerts"** ticked shows the full results table in the run's Summary tab without
+  alerting you.
+- **Re-testing scrapers.** The **Scraping diagnostics** workflows (manual only)
+  try every site with about ten different methods and save the raw pages to the
+  `diag-output` / `diag2-output` branches. Use them if a site starts failing.
 - **Product URLs change.** Search-page entries keep finding new listings by
   themselves, but if a retailer's search URL changes it will show ⚠️ in the
   summary. Update it in `retailers.yaml`.
@@ -116,7 +145,8 @@ Check the summary now and then to see whether a retailer needs its URL updating.
 ```bash
 
 pip install -r requirements.txt
-python -m playwright install chromium
+python -m playwright install chromium firefox webkit
+python -m camoufox fetch
 python stock_alert.py --dry-run          # check everything, print results, no alerts
 python stock_alert.py --dry-run --only smyths
 NTFY_TOKEN=your-topic python stock_alert.py --test-notify

@@ -66,6 +66,7 @@ BLOCKED_TEXT = re.compile(
     re.I,
 )
 NOT_UK_TEXT = re.compile(r"cannot be dispatched to your selected delivery location", re.I)
+NOT_IN_COUNTRY = re.compile(r"not available in your (country|region)", re.I)
 
 
 # --------------------------------------------------------------------------- models
@@ -482,6 +483,12 @@ async def check_product(run: Run, engines: Engines, retailer: dict, url: str, li
         res = Result(name, url, "unknown", title, price, "site thinks we're outside the UK")
     elif data.status and data.status >= 400:
         res = Result(name, url, "error", title, price, f"HTTP {data.status} - product URL may have changed")
+    elif NOT_IN_COUNTRY.search(data.title + "\n" + data.text[:3000]):
+        res = Result(name, url, "blocked", title, price, "site blocks visitors outside the UK")
+    elif not avail and not re.search(settings["title_pattern"], f"{title} {data.title}", re.I):
+        # e.g. Very redirects blocked visitors to its homepage, whose text would
+        # otherwise be misread as "out of stock".
+        res = Result(name, url, "unknown", title, price, "landed on a page that isn't the PS5 Pro (redirected?)")
     else:
         status, reason = decide(avail, data.buy_buttons, data.text)
         res = Result(name, url, status, title, price, reason)

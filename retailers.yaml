@@ -58,7 +58,8 @@ retailers:
     type: tracker
     url: https://www.stockgoblin.co.uk/products/playstation-5-pro-console
     engine: curl_chrome
-    exclude_retailers: [StockX, eBay]
+    # Stock Goblin itself warns its EE data is currently wrong; EE is checked directly below.
+    exclude_retailers: [StockX, eBay, EE]
 
   # ---------------- Amazon ----------------
   - name: Amazon UK
@@ -68,10 +69,12 @@ retailers:
     setup: amazon_uk_postcode
     price_selector: '#corePrice_feature_div .a-offscreen, #corePriceDisplay_desktop_feature_div .a-offscreen, #apex_desktop .a-offscreen'
 
+  # Through Google Translate's proxy Amazon loads but shows US availability.
   - name: Amazon UK
     type: product
     url: https://www.amazon.co.uk/dp/B0DM8SFRJV
     engine: translate
+    enabled: false
     price_selector: '#corePrice_feature_div .a-offscreen, #corePriceDisplay_desktop_feature_div .a-offscreen, #apex_desktop .a-offscreen'
 
   # ---------------- Argos (also Sainsbury's) ----------------
@@ -129,11 +132,12 @@ retailers:
     engine: firefox
 
   # ---------------- GAME ----------------
-  # GAME answers 404 to GitHub's servers for every URL; covered by the trackers.
+  # GAME answers 404 to non-UK visitors (GitHub's servers are in the US); covered by the trackers.
   - name: GAME
     type: search
     url: https://www.game.co.uk/en/playstation/consoles/ps5/
     engine: camoufox
+    enabled: false
 
   # ---------------- PlayStation Direct ----------------
   - name: PlayStation Direct
@@ -175,10 +179,12 @@ retailers:
     link_pattern: '/products/'
     engine: jina
 
+  # ShopTo shows "Not available in your country" to GitHub's US servers; covered by the trackers.
   - name: ShopTo
     type: product
     url: https://www.shopto.net/en/ps5hw93-playstation5-pro-console-p1182475/
     engine: firefox
+    enabled: false
 
   - name: Box
     type: product
