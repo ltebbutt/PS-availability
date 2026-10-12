@@ -2,7 +2,10 @@ name: PS5 Pro stock alert
 
 on:
   schedule:
-    - cron: "*/5 * * * *" # every 5 minutes (GitHub's minimum; runs can be delayed at busy times)
+    # Every 5 minutes, offset from :00/:05 which GitHub's docs say are the most
+    # congested slots. NOTE: scheduled runs execute as whoever last edited this
+    # cron line, so it must be committed by the repo owner (not a bot/app).
+    - cron: "3-58/5 * * * *"
   workflow_dispatch:
     inputs:
       test_notification:
