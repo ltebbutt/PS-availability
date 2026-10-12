@@ -1,0 +1,144 @@
+# PS5 Pro stock alert - retailer list
+#
+# Two kinds of check:
+#   type: product  -> a single product page. Checked for availability using the
+#                     page's structured data (schema.org "InStock") and
+#                     add-to-basket / out-of-stock wording.
+#   type: search   -> a search or category page. Every PS5 Pro console link on it
+#                     is found and then checked like a product page, so new
+#                     listings and bundles are picked up automatically.
+#
+# Optional per-retailer keys:
+#   max_links:     how many matching links to follow from a search page (default 6)
+#   require_text:  only count as in stock if this text is also on the product page
+#                  (e.g. "sold by amazon" to ignore marketplace scalpers)
+#   link_pattern:  regex a product link's URL must match (to skip adverts, etc.)
+#   enabled:       false to skip the entry
+
+settings:
+  # Ignore listings outside this price range (GBP). The max filters out
+  # scalper/marketplace prices (RRP is £789.99, bundles a bit higher); the min
+  # filters out accessories that mention "PS5 Pro". Set to 0 to disable either.
+  min_price: 400
+  max_price: 900
+  # A link/product title must match this to count as a PS5 Pro console.
+  title_pattern: '(ps5|playstation\s*(®|&reg;)?\s*5)\s*(™|&trade;)?\s*pro\b'
+  # ...and must NOT match this (accessories, games, covers, etc.)
+  exclude_pattern: '\b(cover|covers|faceplate|plate|skin|skins|stand|case|charg\w*|cooling|headset|cable|sticker|decal|bag|mount|dock|compatible|for ps5 pro|for playstation 5 pro|enhanced|guide|ssd|memory card|vertical)\b'
+  # Send a reminder if something is still in stock after this many hours.
+  remind_after_hours: 6
+  # Page load timeout (seconds)
+  timeout: 45
+
+retailers:
+  # ---------------- Amazon ----------------
+  - name: Amazon UK
+    type: search
+    url: https://www.amazon.co.uk/s?k=playstation+5+pro+console&i=videogames
+    link_pattern: '/dp/[A-Z0-9]{10}'
+    require_text: 'amazon'
+    max_links: 5
+
+  # ---------------- Big electrical / toy retailers ----------------
+  - name: Argos (also Sainsbury's)
+    type: product
+    url: https://www.argos.co.uk/product/4440006
+
+  - name: Argos (also Sainsbury's)
+    type: product
+    url: https://www.argos.co.uk/product/7797426
+
+  - name: Argos (also Sainsbury's)
+    type: search
+    url: https://www.argos.co.uk/search/playstation-5-pro-console/
+    link_pattern: '/product/\d+'
+
+  - name: Currys
+    type: product
+    url: https://www.currys.co.uk/products/sony-playstation-5-pro-10272138.html
+
+  - name: Currys
+    type: search
+    url: https://www.currys.co.uk/gaming/consoles/consoles/sony/ps5-pro
+    link_pattern: '/products/'
+
+  - name: Smyths Toys
+    type: product
+    url: https://www.smythstoys.com/uk/en-gb/gaming-and-tech/playstation-5/playstation-5-consoles/playstation-5-pro-console-2tb-digital-edition-slim/p/244166
+
+  - name: Smyths Toys
+    type: search
+    url: https://www.smythstoys.com/uk/en-gb/search/?text=playstation%205%20pro%20console
+    link_pattern: '/p/\d+'
+
+  - name: Very
+    type: product
+    url: https://www.very.co.uk/playstation-playstationreg5-pro-console-2tb-with-grand-theft-auto-v-amp-disc-drive/1601238401.prd
+
+  - name: Very
+    type: search
+    url: https://www.very.co.uk/search/playstation%205%20pro%20console
+    link_pattern: '\.prd'
+
+  - name: Littlewoods
+    type: search
+    url: https://www.littlewoods.com/search/playstation%205%20pro%20console
+    link_pattern: '\.prd'
+
+  - name: John Lewis
+    type: search
+    url: https://www.johnlewis.com/search?search-term=playstation%205%20pro%20console
+    link_pattern: '/p\d+'
+
+  - name: GAME
+    type: search
+    url: https://www.game.co.uk/search?q=playstation%205%20pro%20console
+
+  - name: PlayStation Direct
+    type: search
+    url: https://direct.playstation.com/en-gb/hardware/ps5
+    link_pattern: '/buy-consoles/'
+
+  # ---------------- Supermarkets ----------------
+  - name: Tesco
+    type: search
+    url: https://www.tesco.com/groceries/en-GB/search?query=playstation%205%20pro%20console
+    link_pattern: '/products/'
+
+  - name: Asda
+    type: search
+    url: https://www.asda.com/groceries/search/playstation%205%20pro
+
+  - name: Costco UK
+    type: search
+    url: https://www.costco.co.uk/search?text=playstation%205%20pro
+    link_pattern: '/p/'
+
+  # ---------------- Online specialists ----------------
+  - name: AO.com
+    type: search
+    url: https://ao.com/l/search/101/99/?search=playstation%205%20pro
+
+  - name: Ebuyer
+    type: search
+    url: https://www.ebuyer.com/search?q=playstation+5+pro+console
+
+  - name: Scan
+    type: search
+    url: https://www.scan.co.uk/search?q=playstation+5+pro+console
+
+  - name: ShopTo
+    type: search
+    url: https://www.shopto.net/en/search/?search=playstation+5+pro+console
+
+  - name: Box
+    type: search
+    url: https://www.box.co.uk/search?q=playstation+5+pro
+
+  - name: Hughes
+    type: search
+    url: https://www.hughes.co.uk/search?q=playstation+5+pro
+
+  - name: EE
+    type: search
+    url: https://shop.ee.co.uk/search?q=playstation%205%20pro

@@ -1,0 +1,80 @@
+name: PS5 Pro stock alert
+
+on:
+  schedule:
+    - cron: "*/5 * * * *" # every 5 minutes (GitHub's minimum; runs can be delayed at busy times)
+  workflow_dispatch:
+    inputs:
+      test_notification:
+        description: "Just send a test alert to check your phone/email setup"
+        type: boolean
+        default: false
+
+# Never run two checks at once; a queued run waits for the current one.
+concurrency:
+  group: ps5-stock-alert
+  cancel-in-progress: false
+
+permissions:
+  contents: write # to commit state.json so you only get alerted once per restock
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+      EMAIL_TO: ${{ secrets.EMAIL_TO }}
+      TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+      TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+      TWILIO_FROM: ${{ secrets.TWILIO_FROM }}
+      SMS_TO: ${{ secrets.SMS_TO }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - run: pip install -r requirements.txt
+
+      - name: Send test notification
+        if: ${{ inputs.test_notification }}
+        run: python stock_alert.py --test-notify
+
+      - name: Cache Playwright browser
+        if: ${{ !inputs.test_notification }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+
+      - name: Install Chromium
+        if: ${{ !inputs.test_notification }}
+        run: python -m playwright install --with-deps chromium
+
+      - name: Check retailers
+        if: ${{ !inputs.test_notification }}
+        run: python stock_alert.py
+
+      - name: Save alert state
+        if: ${{ !inputs.test_notification }}
+        run: |
+          git diff --quiet -- state.json && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git commit -m "ps5-stock-alert: update state [skip ci]"
+          for i in 1 2 3; do
+            git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push && exit 0
+            sleep $((i * 5))
+          done
+          exit 1
