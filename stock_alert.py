@@ -355,13 +355,11 @@ def notify(alerts: list[Result], test: bool = False) -> list[str]:
 
 
 def _ntfy(subject: str, body: str, alerts: list[Result], test: bool) -> bool:
-    topic = os.environ.get("NTFY_TOPIC")
+    topic = os.environ.get("NTFY_TOKEN")  # the secret ntfy topic name
     if not topic:
         return False
     server = os.environ.get("NTFY_SERVER", "https://ntfy.sh").rstrip("/")
     headers = {"Priority": "urgent", "Tags": "video_game,rotating_light"}
-    if os.environ.get("NTFY_TOKEN"):
-        headers["Authorization"] = f"Bearer {os.environ['NTFY_TOKEN']}"
     # One push per product so tapping the notification opens that product page.
     items = [None] if test else alerts
     for a in items:

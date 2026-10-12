@@ -44,7 +44,7 @@ repository secret**. Add the secrets for the channels you want.
 2. Open it, tap **+**, and subscribe to a topic with a long, unguessable name such
    as `ps5pro-alert-8f3k29xq`. Anyone who knows the name can read the topic, so
    don't use something guessable.
-3. Add the secret `NTFY_TOPIC` with that exact topic name.
+3. Add the secret `NTFY_TOKEN` with that exact topic name.
 4. In iPhone **Settings → Notifications → ntfy**, set alerts to Immediate/Time
    Sensitive so they get through Focus modes.
 
@@ -119,5 +119,5 @@ pip install -r requirements.txt
 python -m playwright install chromium
 python stock_alert.py --dry-run          # check everything, print results, no alerts
 python stock_alert.py --dry-run --only smyths
-NTFY_TOPIC=your-topic python stock_alert.py --test-notify
+NTFY_TOKEN=your-topic python stock_alert.py --test-notify
 ```

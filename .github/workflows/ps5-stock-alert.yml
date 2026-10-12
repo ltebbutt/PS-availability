@@ -23,7 +23,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
       NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
       SMTP_HOST: ${{ secrets.SMTP_HOST }}
       SMTP_PORT: ${{ secrets.SMTP_PORT }}
