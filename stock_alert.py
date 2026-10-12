@@ -355,6 +355,11 @@ class Engines:
                 page = await ctx.new_page()
                 try:
                     await page.goto("https://www.amazon.co.uk/", wait_until="domcontentloaded", timeout=45000)
+                    # Amazon sometimes shows a "Continue shopping" interstitial first.
+                    cont = page.get_by_role("button", name=re.compile("continue shopping", re.I))
+                    if await cont.count():
+                        await cont.first.click()
+                        await page.wait_for_load_state("domcontentloaded")
                     for sel in ("#sp-cc-accept", "input[name='accept']"):
                         if await page.query_selector(sel):
                             await page.click(sel)
@@ -417,18 +422,27 @@ class Engines:
             await page.close()
 
     async def _wait_out_challenge(self, page, max_secs: float | None = None):
-        """Give JavaScript anti-bot challenges time to finish and redirect."""
+        """Give JavaScript anti-bot challenges time to finish, reloading once if stuck."""
         max_secs = max_secs if max_secs is not None else self.settings.get("challenge_wait", 20)
-        waited = 0.0
+        waited, reloaded = 0.0, False
         while waited < max_secs:
             try:
                 title = (await page.title() or "").lower()
+                body = (await page.inner_text("body"))[:2000].lower()
             except Exception:
-                title = ""
-            if not any(t in title for t in CHALLENGE_TITLES):
+                title, body = "", ""
+            stuck = (not title and len(body) < 400) or any(t in title for t in CHALLENGE_TITLES) \
+                or bool(BLOCKED_TEXT.search(body[:600]))
+            if not stuck:
                 return
-            await page.wait_for_timeout(2000)
-            waited += 2
+            if not reloaded and waited >= max_secs / 2:
+                try:
+                    await page.reload(wait_until="domcontentloaded", timeout=30000)
+                except Exception:
+                    pass
+                reloaded = True
+            await page.wait_for_timeout(2500)
+            waited += 2.5
 
 
 # --------------------------------------------------------------------------- checks
@@ -618,15 +632,16 @@ async def check_all(config: dict, only: str | None) -> list[Result]:
     finally:
         await engines.close()
 
-    # The same product can be found by several entries (e.g. a retailer check and a
-    # tracker). Keep the most useful answer for each: in stock beats out of stock
-    # beats unknown/blocked, so a blocked direct check never hides a tracker alert.
-    best: dict[str, Result] = {}
+    # Drop exact repeats (same page found by two search entries). The same product
+    # seen by both a direct check and a tracker is kept twice so the summary shows
+    # both; find_alerts() only alerts once per product.
+    seen, results = set(), []
     for res in (r for group in nested for r in group):
-        cur = best.get(res.key)
-        if cur is None or STATUS_RANK[res.status] < STATUS_RANK[cur.status]:
-            best[res.key] = res
-    return list(best.values())
+        ident = (res.key, res.retailer)
+        if ident not in seen:
+            seen.add(ident)
+            results.append(res)
+    return results
 
 
 # --------------------------------------------------------------------------- notifications
@@ -740,7 +755,13 @@ def find_alerts(results: list[Result], state: dict, remind_hours: float) -> list
     now = datetime.now(timezone.utc)
     products = state.setdefault("products", {})
     alerts = []
+    # One answer per product: in stock beats out of stock, so a blocked or stale
+    # direct check never hides a tracker that has seen stock (and vice versa).
+    best: dict[str, Result] = {}
     for r in results:
+        if r.key not in best or STATUS_RANK[r.status] < STATUS_RANK[best[r.key].status]:
+            best[r.key] = r
+    for r in best.values():
         if r.status not in ("in_stock", "out_of_stock"):
             continue
         prev = products.get(r.key)
