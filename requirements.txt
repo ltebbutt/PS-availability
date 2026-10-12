@@ -1,3 +1,6 @@
 playwright==1.56.0
+camoufox[geoip]==0.5.8
+curl_cffi==0.16.3
+beautifulsoup4==4.15.0
 PyYAML==6.0.2
 requests==2.32.3

@@ -193,9 +193,10 @@ def price_ok(price: float | None, settings: dict) -> bool:
 #   curl_ios       curl_cffi impersonating iPhone Safari (no JavaScript)
 #   curl_chrome    curl_cffi impersonating desktop Chrome (no JavaScript)
 #   jina           fetched by the r.jina.ai reader service from its own servers
+#   translate      fetched through Google Translate's page proxy (translate.goog)
 
 BROWSER_ENGINES = {"chromium", "firefox", "webkit_iphone", "camoufox"}
-HTML_ENGINES = {"curl_ios", "curl_chrome", "jina"}
+HTML_ENGINES = {"curl_ios", "curl_chrome", "jina", "translate"}
 CHALLENGE_TITLES = ("just a moment", "attention required", "bear with us", "please wait", "one moment")
 
 LINKS_JS = """els => els.map(a => ({
@@ -271,6 +272,14 @@ def parse_html(status: int | None, html: str, base_url: str, price_selector: str
     )
 
 
+def translate_url(url: str) -> str:
+    """https://www.argos.co.uk/x -> https://www-argos-co-uk.translate.goog/x?_x_tr_..."""
+    p = urlsplit(url)
+    host = p.netloc.replace("-", "--").replace(".", "-")
+    query = (p.query + "&" if p.query else "") + "_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en"
+    return f"https://{host}.translate.goog{p.path}?{query}"
+
+
 class Engines:
     """Lazily starts one browser/HTTP client per engine and shares it across checks."""
 
@@ -326,10 +335,10 @@ class Engines:
             browser = await self.stack.enter_async_context(
                 AsyncCamoufox(headless=headless, locale="en-GB", os="windows", humanize=True))
             return await browser.new_context(**london)
-        if engine in ("curl_ios", "curl_chrome", "jina"):
+        if engine in HTML_ENGINES:
             from curl_cffi.requests import AsyncSession
 
-            imp = {"curl_ios": "safari_ios", "curl_chrome": "chrome", "jina": "chrome"}[engine]
+            imp = "safari_ios" if engine == "curl_ios" else "chrome"
             return await self.stack.enter_async_context(AsyncSession(impersonate=imp))
         raise ValueError(f"unknown engine {engine!r}")
 
@@ -369,6 +378,8 @@ class Engines:
                 headers = {"X-Return-Format": "html"}
                 if os.environ.get("JINA_API_KEY"):
                     headers["Authorization"] = f"Bearer {os.environ['JINA_API_KEY']}"
+            elif engine == "translate":
+                target = translate_url(url)
             r = await ctx.get(target, headers=headers, timeout=timeout + 15)
             return parse_html(r.status_code, r.text, url, price_selector)
 
