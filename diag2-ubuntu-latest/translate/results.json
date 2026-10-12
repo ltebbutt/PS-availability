@@ -1,0 +1,189 @@
+{
+ "argos_4440006": {
+  "status": 400,
+  "bytes": 5900,
+  "title": "Google Translate",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.6
+ },
+ "argos_4350000": {
+  "status": 400,
+  "bytes": 5900,
+  "title": "Google Translate",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.3
+ },
+ "currys": {
+  "status": 403,
+  "bytes": 10924,
+  "title": "Attention Required! | Cloudflare",
+  "blocked_marker": "Attention Required",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.3
+ },
+ "very": {
+  "status": 403,
+  "bytes": 9342,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "very_search": {
+  "status": 403,
+  "bytes": 9336,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "littlewoods": {
+  "status": 403,
+  "bytes": 9378,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "smyths": {
+  "status": 200,
+  "bytes": 11826,
+  "title": "",
+  "blocked_marker": "Pardon Our Interruption",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.3
+ },
+ "ao": {
+  "status": 403,
+  "bytes": 10586,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "hughes": {
+  "status": 200,
+  "bytes": 309318,
+  "title": "Hughes | Washing Machines, Kitchen Appliances, TVs and Fridg",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 1.0
+ },
+ "johnlewis": {
+  "status": 408,
+  "bytes": 5949,
+  "title": "Google Translate",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 14.5
+ },
+ "game": {
+  "status": 408,
+  "bytes": 5912,
+  "title": "Google Translate",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 14.6
+ },
+ "ebuyer": {
+  "status": 408,
+  "bytes": 5937,
+  "title": "Google Translate",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 14.5
+ },
+ "box": {
+  "status": 403,
+  "bytes": 11054,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "scan": {
+  "status": 429,
+  "bytes": 3651,
+  "title": "https://www-scan-co-uk.translate.goog/products/sony-playstat",
+  "blocked_marker": "captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.5
+ },
+ "shopto": {
+  "status": 200,
+  "bytes": 245139,
+  "title": "Buy PlayStation 5 Pro Console Digital (NO DISC) PS5 - ShopTo",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 10,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 2.9
+ },
+ "ee": {
+  "status": 200,
+  "bytes": 6210,
+  "title": "",
+  "blocked_marker": "Incapsula",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "amazon": {
+  "status": 200,
+  "bytes": 1386770,
+  "title": "PlayStation 5 Pro : Amazon.co.uk: PC &amp; Video Games",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 8,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 2.3
+ }
+}

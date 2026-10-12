@@ -1,0 +1,197 @@
+{
+ "argos_4440006": {
+  "status": 200,
+  "bytes": 1500802,
+  "title": "Something went wrong - Argos.co.uk",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 16.1
+ },
+ "argos_4350000": {
+  "status": 403,
+  "bytes": 1635268,
+  "title": "Something went wrong - Argos.co.uk",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 21.2
+ },
+ "currys": {
+  "status": 403,
+  "bytes": 386255,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 35.3
+ },
+ "very": {
+  "status": 403,
+  "bytes": 4463,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 32.2
+ },
+ "very_search": {
+  "status": 403,
+  "bytes": 4463,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 30.4
+ },
+ "littlewoods": {
+  "status": 403,
+  "bytes": 534851,
+  "title": "Littlewoods Site | Online Shopping Department Store for Wome",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 20.2
+ },
+ "smyths": {
+  "status": 200,
+  "bytes": 549870,
+  "title": "PlayStation 5 Pro Console - 2TB Digital Edition Slim | Smyth",
+  "blocked_marker": "",
+  "schema_availability": [
+   "OutOfStock"
+  ],
+  "ps5_pro_mentions": 7,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 23.0
+ },
+ "ao": {
+  "status": 403,
+  "bytes": 28392,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 30.1
+ },
+ "hughes": {
+  "status": 200,
+  "bytes": 453164,
+  "title": "Hughes | Washing Machines, Kitchen Appliances, TVs and Fridg",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 4.8
+ },
+ "johnlewis": {
+  "status": 200,
+  "bytes": 283926,
+  "title": "PlayStation 5 Pro Console with DualSense Controller",
+  "blocked_marker": "",
+  "schema_availability": [
+   "Discontinued"
+  ],
+  "ps5_pro_mentions": 16,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 6.1
+ },
+ "game": {
+  "status": 404,
+  "bytes": 411428,
+  "title": "Not Found",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 7.2
+ },
+ "ebuyer": {
+  "status": 200,
+  "bytes": 703845,
+  "title": "Search Results",
+  "blocked_marker": "",
+  "schema_availability": [
+   "InStock"
+  ],
+  "ps5_pro_mentions": 1,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 7.4
+ },
+ "box": {
+  "status": 200,
+  "bytes": 842809,
+  "title": "P5HEHWSNY59577 Sony PlayStation 5 Pro AMD Ryzen Zen Console",
+  "blocked_marker": "",
+  "schema_availability": [
+   "OutOfStock"
+  ],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 14.5
+ },
+ "scan": {
+  "status": 403,
+  "bytes": 28821,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 30.1
+ },
+ "shopto": {
+  "status": 200,
+  "bytes": 158857,
+  "title": "Not available in your country | ShopTo.net",
+  "blocked_marker": "captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 9.7
+ },
+ "ee": {
+  "status": 200,
+  "bytes": 887,
+  "title": "",
+  "blocked_marker": "Incapsula",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 30.0
+ },
+ "amazon": {
+  "status": 200,
+  "bytes": 3518,
+  "title": "Amazon.co.uk",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 5.2
+ }
+}

@@ -1,0 +1,195 @@
+{
+ "argos_4440006": {
+  "status": 200,
+  "bytes": 308,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 45.5
+ },
+ "argos_4350000": {
+  "status": 200,
+  "bytes": 308,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 29.3
+ },
+ "currys": {
+  "status": 403,
+  "bytes": 386746,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 32.7
+ },
+ "very": {
+  "status": 403,
+  "bytes": 4463,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 28.9
+ },
+ "very_search": {
+  "status": 403,
+  "bytes": 4463,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 29.0
+ },
+ "littlewoods": {
+  "status": 403,
+  "bytes": 4471,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 28.3
+ },
+ "smyths": {
+  "status": 200,
+  "bytes": 889,
+  "title": "",
+  "blocked_marker": "Incapsula",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 27.6
+ },
+ "ao": {
+  "status": 403,
+  "bytes": 28776,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 30.2
+ },
+ "hughes": {
+  "status": 200,
+  "bytes": 788839,
+  "title": "Hughes | Washing Machines, Kitchen Appliances, TVs and Fridg",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 5.5
+ },
+ "johnlewis": {
+  "status": 200,
+  "bytes": 1355982,
+  "title": "PlayStation 5 Pro Console with DualSense Controller",
+  "blocked_marker": "",
+  "schema_availability": [
+   "Discontinued"
+  ],
+  "ps5_pro_mentions": 16,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 5.7
+ },
+ "game": {
+  "status": 404,
+  "bytes": 411410,
+  "title": "Not Found",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 4.8
+ },
+ "ebuyer": {
+  "status": 200,
+  "bytes": 866305,
+  "title": "Search Results",
+  "blocked_marker": "",
+  "schema_availability": [
+   "InStock"
+  ],
+  "ps5_pro_mentions": 1,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 5.0
+ },
+ "box": {
+  "status": 200,
+  "bytes": 716808,
+  "title": "P5HEHWSNY59577 Sony PlayStation 5 Pro AMD Ryzen Zen Console",
+  "blocked_marker": "",
+  "schema_availability": [
+   "OutOfStock"
+  ],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 6.6
+ },
+ "scan": {
+  "status": 403,
+  "bytes": 29204,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 28.6
+ },
+ "shopto": {
+  "status": 200,
+  "bytes": 155606,
+  "title": "Not available in your country | ShopTo.net",
+  "blocked_marker": "captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 5.1
+ },
+ "ee": {
+  "status": 200,
+  "bytes": 882,
+  "title": "",
+  "blocked_marker": "Incapsula",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 28.4
+ },
+ "amazon": {
+  "status": 200,
+  "bytes": 3518,
+  "title": "Amazon.co.uk",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 1.7
+ }
+}

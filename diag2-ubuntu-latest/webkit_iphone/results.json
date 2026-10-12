@@ -1,0 +1,195 @@
+{
+ "argos_4440006": {
+  "status": 404,
+  "bytes": 1670057,
+  "title": "Something went wrong - Argos.co.uk",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 12.1
+ },
+ "argos_4350000": {
+  "status": 403,
+  "bytes": 454,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 28.0
+ },
+ "currys": {
+  "status": 403,
+  "bytes": 386447,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 29.9
+ },
+ "very": {
+  "status": 200,
+  "bytes": 708313,
+  "title": "Very | Womens, Mens and Kids Fashion, Furniture, Electricals",
+  "blocked_marker": "akamai",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 12.4
+ },
+ "very_search": {
+  "status": 403,
+  "bytes": 4311,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 27.1
+ },
+ "littlewoods": {
+  "status": 200,
+  "bytes": 458133,
+  "title": "Littlewoods Site | Online Shopping Department Store for Wome",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 6.7
+ },
+ "smyths": {
+  "status": 200,
+  "bytes": 889,
+  "title": "",
+  "blocked_marker": "Incapsula",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 27.4
+ },
+ "ao": {
+  "status": 403,
+  "bytes": 28477,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 28.9
+ },
+ "hughes": {
+  "status": 200,
+  "bytes": 790612,
+  "title": "Hughes | Washing Machines, Kitchen Appliances, TVs and Fridg",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 10.7
+ },
+ "johnlewis": {
+  "status": 200,
+  "bytes": 307067,
+  "title": "PlayStation 5 Pro Console with DualSense Controller",
+  "blocked_marker": "",
+  "schema_availability": [
+   "Discontinued"
+  ],
+  "ps5_pro_mentions": 16,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 6.4
+ },
+ "game": {
+  "status": 404,
+  "bytes": 411513,
+  "title": "Not Found",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 4.9
+ },
+ "ebuyer": {
+  "status": 200,
+  "bytes": 867915,
+  "title": "Search Results",
+  "blocked_marker": "",
+  "schema_availability": [
+   "InStock"
+  ],
+  "ps5_pro_mentions": 1,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 5.0
+ },
+ "box": {
+  "status": 200,
+  "bytes": 622093,
+  "title": "P5HEHWSNY59577 Sony PlayStation 5 Pro AMD Ryzen Zen Console",
+  "blocked_marker": "",
+  "schema_availability": [
+   "OutOfStock"
+  ],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 6.2
+ },
+ "scan": {
+  "status": 403,
+  "bytes": 28927,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 30.1
+ },
+ "shopto": {
+  "status": 200,
+  "bytes": 155474,
+  "title": "Not available in your country | ShopTo.net",
+  "blocked_marker": "captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 2,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 9.4
+ },
+ "ee": {
+  "status": 200,
+  "bytes": 887,
+  "title": "",
+  "blocked_marker": "Incapsula",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 30.4
+ },
+ "amazon": {
+  "status": 200,
+  "bytes": 3518,
+  "title": "Amazon.co.uk",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 2.6
+ }
+}

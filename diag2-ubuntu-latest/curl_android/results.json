@@ -1,0 +1,193 @@
+{
+ "argos_4440006": {
+  "status": 200,
+  "bytes": 2708,
+  "title": "",
+  "blocked_marker": "akamai",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.6
+ },
+ "argos_4350000": {
+  "status": 200,
+  "bytes": 2708,
+  "title": "",
+  "blocked_marker": "akamai",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "currys": {
+  "status": 403,
+  "bytes": 5846,
+  "title": "Attention Required! | Cloudflare",
+  "blocked_marker": "Attention Required",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.1
+ },
+ "very": {
+  "status": 403,
+  "bytes": 4455,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "very_search": {
+  "status": 403,
+  "bytes": 4305,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.1
+ },
+ "littlewoods": {
+  "status": 403,
+  "bytes": 4458,
+  "title": "Access Denied",
+  "blocked_marker": "Access Denied",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.3
+ },
+ "smyths": {
+  "status": 200,
+  "bytes": 6183,
+  "title": "Pardon Our Interruption",
+  "blocked_marker": "Pardon Our Interruption",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.4
+ },
+ "ao": {
+  "status": 403,
+  "bytes": 5902,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.1
+ },
+ "hughes": {
+  "status": 200,
+  "bytes": 491309,
+  "title": "Hughes | Washing Machines, Kitchen Appliances, TVs and Fridg",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": false,
+  "secs": 0.5
+ },
+ "johnlewis": {
+  "status": 200,
+  "bytes": 284006,
+  "title": "PlayStation 5 Pro Console with DualSense Controller",
+  "blocked_marker": "",
+  "schema_availability": [
+   "Discontinued"
+  ],
+  "ps5_pro_mentions": 16,
+  "buy_text": false,
+  "oos_text": true,
+  "secs": 0.7
+ },
+ "game": {
+  "status": 404,
+  "bytes": 250590,
+  "title": "Not Found",
+  "blocked_marker": "",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 0.7
+ },
+ "ebuyer": {
+  "status": 200,
+  "bytes": 746687,
+  "title": "Search Results",
+  "blocked_marker": "",
+  "schema_availability": [
+   "InStock"
+  ],
+  "ps5_pro_mentions": 1,
+  "buy_text": true,
+  "oos_text": true,
+  "secs": 0.7
+ },
+ "box": {
+  "status": 403,
+  "bytes": 6079,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.3
+ },
+ "scan": {
+  "status": 403,
+  "bytes": 6307,
+  "title": "Just a moment...",
+  "blocked_marker": "Just a moment",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ },
+ "shopto": {
+  "status": 200,
+  "bytes": 8659,
+  "title": "Buy PlayStation 5 Pro Console Digital (NO DISC) PS5 - ShopTo",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 1,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.8
+ },
+ "ee": {
+  "status": 200,
+  "bytes": 955,
+  "title": "",
+  "blocked_marker": "Incapsula",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.5
+ },
+ "amazon": {
+  "status": 200,
+  "bytes": 3805,
+  "title": "Amazon.co.uk",
+  "blocked_marker": "Captcha",
+  "schema_availability": [],
+  "ps5_pro_mentions": 0,
+  "buy_text": false,
+  "oos_text": false,
+  "secs": 0.2
+ }
+}

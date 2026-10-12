@@ -1,0 +1,21 @@
+## Scraping diagnostics on Linux (Linux)
+
+| site | curl_ios | curl_android | translate | webkit_iphone | firefox_wait | patchright_wait | camoufox_wait | amazon_uk |
+|---|---|---|---|---|---|---|---|---|
+| argos_4440006 | BLOCKED 403 | BLOCKED 200 | HTTP400 400 | HTTP404 404 buy | BLOCKED 200 | BLOCKED 200 | NO-DATA 200 buy | BLOCKED 403 buy |
+| argos_4350000 | BLOCKED 403 | BLOCKED 200 | HTTP400 400 | BLOCKED 403 | BLOCKED 200 | BLOCKED 200 | BLOCKED 403 buy | BLOCKED 403 buy |
+| currys | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| very | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | NO-DATA 200 buy | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| very_search | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| littlewoods | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | NO-DATA 200 buy | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 buy | BLOCKED 403 buy |
+| smyths | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | OK 200 OutOfStock | OK 200 OutOfStock |
+| ao | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| hughes | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy | NO-DATA 200 buy |
+| johnlewis | OK 200 Discontinued | OK 200 Discontinued | HTTP408 408 | OK 200 Discontinued | OK 200 Discontinued | OK 200 Discontinued | OK 200 Discontinued | OK 200 Discontinued |
+| game | HTTP404 404 buy | HTTP404 404 buy | HTTP408 408 | HTTP404 404 buy | HTTP404 404 buy | HTTP404 404 buy | HTTP404 404 buy | HTTP404 404 buy |
+| ebuyer | OK 200 InStock | OK 200 InStock | HTTP408 408 | OK 200 InStock | OK 200 InStock | OK 200 InStock | OK 200 InStock | OK 200 InStock |
+| box | OK 200 OutOfStock | BLOCKED 403 | BLOCKED 403 | OK 200 OutOfStock | OK 200 OutOfStock | OK 200 OutOfStock | OK 200 OutOfStock | OK 200 OutOfStock |
+| scan | BLOCKED 403 | BLOCKED 403 | BLOCKED 429 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 | BLOCKED 403 |
+| shopto | BLOCKED 200 | BLOCKED 200 | OK 200 buy | OK 200 oos | OK 200 oos | OK 200 oos | OK 200 oos | OK 200 oos |
+| ee | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 |
+| amazon | BLOCKED 200 | BLOCKED 200 | OK 200 buy | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | BLOCKED 200 | OK 200 buy |
