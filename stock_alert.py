@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """PS5 Pro UK stock alert.
 
-Checks the retailers in retailers.yaml with a headless Chromium browser and sends
+Checks the retailers and stock trackers in retailers.yaml (each with the
+scraping engine that gets past its bot protection) and sends
 an alert (ntfy push, email and/or SMS) when a PS5 Pro goes from unavailable to
 in stock. Designed to run on a GitHub Actions schedule; state.json remembers what
 was already alerted so you get one alert per restock, not one every 5 minutes.
@@ -16,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import html
 import json
 import os
 import re
@@ -25,11 +27,12 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from pathlib import Path
-from urllib.parse import urljoin, urlsplit, urlunsplit
+from contextlib import AsyncExitStack
+from urllib.parse import parse_qs, unquote, urljoin, urlsplit, urlunsplit
 
 import requests
 import yaml
-from playwright.async_api import Page, async_playwright
+from playwright.async_api import async_playwright
 
 HERE = Path(__file__).resolve().parent
 CONFIG_PATH = HERE / "retailers.yaml"
@@ -57,9 +60,12 @@ OUT_OF_STOCK_TEXT = re.compile(
 )
 BLOCKED_TEXT = re.compile(
     r"(captcha|are you a robot|verify you are (a )?human|access denied|pardon our interruption|"
-    r"request unsuccessful|unusual traffic|enter the characters you see|bot protection)",
+    r"request unsuccessful|unusual traffic|enter the characters you see|bot protection|incapsula|"
+    r"powered and protected by|just a moment|bear with us|checking your connection|"
+    r"click the button below to continue shopping)",
     re.I,
 )
+NOT_UK_TEXT = re.compile(r"cannot be dispatched to your selected delivery location", re.I)
 
 
 # --------------------------------------------------------------------------- models
@@ -72,6 +78,10 @@ class Result:
     title: str = ""
     price: float | None = None
     reason: str = ""
+    key: str = ""  # identity for alert state; defaults to the URL
+
+    def __post_init__(self):
+        self.key = self.key or self.url
 
 
 @dataclass
@@ -114,7 +124,7 @@ def parse_structured_data(blocks: list[str]) -> tuple[list[str], list[float], st
             continue
     avail, prices, name = [], [], ""
     for p in products:
-        name = name or str(p.get("name") or "")
+        name = name or html.unescape(str(p.get("name") or ""))
         offers = p.get("offers") or []
         offers = offers if isinstance(offers, list) else [offers]
         for o in offers:
@@ -172,31 +182,204 @@ def price_ok(price: float | None, settings: dict) -> bool:
     return (not lo or price >= lo) and (not hi or price <= hi)
 
 
-# --------------------------------------------------------------------------- browser work
+# --------------------------------------------------------------------------- fetching
+#
+# Each retailer can pick the fetch "engine" that gets past its bot protection
+# (see the diagnose/ workflows for how these were chosen):
+#   chromium       Playwright headless Chromium (default)
+#   firefox        Playwright headless Firefox
+#   webkit_iphone  Playwright WebKit emulating an iPhone
+#   camoufox       Camoufox, a Firefox build with fingerprint spoofing
+#   curl_ios       curl_cffi impersonating iPhone Safari (no JavaScript)
+#   curl_chrome    curl_cffi impersonating desktop Chrome (no JavaScript)
+#   jina           fetched by the r.jina.ai reader service from its own servers
 
-async def load(page: Page, url: str, timeout: int) -> int | None:
-    resp = await page.goto(url, wait_until="domcontentloaded", timeout=timeout * 1000)
-    try:
-        await page.wait_for_load_state("networkidle", timeout=8000)
-    except Exception:
-        pass  # many retail sites never go fully idle
-    return resp.status if resp else None
+BROWSER_ENGINES = {"chromium", "firefox", "webkit_iphone", "camoufox"}
+HTML_ENGINES = {"curl_ios", "curl_chrome", "jina"}
+CHALLENGE_TITLES = ("just a moment", "attention required", "bear with us", "please wait", "one moment")
+
+LINKS_JS = """els => els.map(a => ({
+    href: a.getAttribute('href'),
+    text: (a.innerText || a.getAttribute('aria-label') || a.getAttribute('title')
+           || (a.querySelector('img') && a.querySelector('img').alt) || '').trim()
+}))"""
+
+# A tracker "card" is the largest element around a retailer heading (h3) that
+# contains no other retailer heading.
+CARDS_JS = """() => [...document.querySelectorAll('h3')].map(h3 => {
+    let el = h3;
+    while (el.parentElement && el.parentElement.querySelectorAll('h3').length === 1) el = el.parentElement;
+    const h4 = el.querySelector('h4');
+    return {retailer: h3.innerText.trim() || h3.textContent.trim(), title: h4 ? h4.textContent.trim() : '',
+            text: el.innerText, hrefs: [...el.querySelectorAll('a[href]')].map(a => a.href)};
+})"""
 
 
-async def check_product(run: Run, ctx, retailer: dict, url: str, link_title: str = "") -> Result:
-    if url in run.checked:
-        return run.checked[url]
-    name = retailer["name"]
-    settings = run.settings
-    async with run.sem:
+@dataclass
+class PageData:
+    status: int | None
+    title: str
+    text: str
+    ld_blocks: list[str]
+    buy_buttons: int
+    links: list[dict]
+    cards: list[dict] = field(default_factory=list)
+    price_text: str = ""
+
+
+def parse_html(status: int | None, html: str, base_url: str, price_selector: str | None = None) -> PageData:
+    """Build PageData from raw HTML (for the engines that don't run JavaScript)."""
+    from bs4 import BeautifulSoup
+
+    soup = BeautifulSoup(html or "", "html.parser")
+    ld_blocks = [s.get_text() for s in soup.select('script[type="application/ld+json"]')]
+    for tag in soup(["script", "style", "noscript", "template"]):
+        tag.decompose()
+    buttons = 0
+    for el in soup.select("button, input[type=submit], input[type=button], a[role=button]"):
+        label = el.get_text(" ", strip=True) or el.get("value") or el.get("aria-label") or ""
+        disabled = el.has_attr("disabled") or el.get("aria-disabled") == "true"
+        if BUY_BUTTON.search(label) and not disabled:
+            buttons += 1
+    links = []
+    for a in soup.select("a[href]"):
+        img = a.find("img")
+        label = a.get_text(" ", strip=True) or a.get("aria-label") or a.get("title") or (img.get("alt") if img else "") or ""
+        links.append({"href": a["href"], "text": label})
+    cards = []
+    for h3 in soup.find_all("h3"):
+        el = h3
+        while el.parent is not None and el.parent.name and len(el.parent.find_all("h3")) == 1:
+            el = el.parent
+        h4 = el.find("h4")
+        cards.append({
+            "retailer": h3.get_text(" ", strip=True),
+            "title": h4.get_text(" ", strip=True) if h4 else "",
+            "text": el.get_text("\n", strip=True),
+            "hrefs": [urljoin(base_url, a["href"]) for a in el.select("a[href]")],
+        })
+    price_el = soup.select_one(price_selector) if price_selector else None
+    return PageData(
+        status=status,
+        title=soup.title.get_text(strip=True) if soup.title else "",
+        text=soup.get_text("\n", strip=True),
+        ld_blocks=ld_blocks,
+        buy_buttons=buttons,
+        links=links,
+        cards=cards,
+        price_text=price_el.get_text(" ", strip=True) if price_el else "",
+    )
+
+
+class Engines:
+    """Lazily starts one browser/HTTP client per engine and shares it across checks."""
+
+    def __init__(self, settings: dict):
+        self.settings = settings
+        self.stack = AsyncExitStack()
+        self.contexts: dict[str, object] = {}
+        self.locks: dict[str, asyncio.Lock] = {}
+        self.pw = None
+        self.prepared: set[str] = set()
+
+    async def close(self):
+        await self.stack.aclose()
+
+    async def _playwright(self):
+        if self.pw is None:
+            self.pw = await self.stack.enter_async_context(async_playwright())
+        return self.pw
+
+    async def context(self, engine: str):
+        lock = self.locks.setdefault(engine, asyncio.Lock())
+        async with lock:
+            if engine not in self.contexts:
+                self.contexts[engine] = await self._start(engine)
+            return self.contexts[engine]
+
+    async def _start(self, engine: str):
+        london = {"locale": "en-GB", "timezone_id": "Europe/London"}
+        if engine == "chromium":
+            pw = await self._playwright()
+            browser = await pw.chromium.launch(headless=True, args=["--disable-blink-features=AutomationControlled"])
+            ctx = await browser.new_context(
+                user_agent=USER_AGENT, viewport={"width": 1366, "height": 900},
+                extra_http_headers={"Accept-Language": "en-GB,en;q=0.9"}, **london,
+            )
+            await ctx.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+            # Skip heavy assets - we only need the HTML/JS.
+            await ctx.route(re.compile(r"\.(png|jpe?g|gif|webp|avif|woff2?|ttf|mp4|webm)(\?|$)", re.I),
+                            lambda route: route.abort())
+            return ctx
+        if engine == "firefox":
+            pw = await self._playwright()
+            browser = await pw.firefox.launch(headless=True)
+            return await browser.new_context(**london)
+        if engine == "webkit_iphone":
+            pw = await self._playwright()
+            browser = await pw.webkit.launch(headless=True)
+            return await browser.new_context(**pw.devices["iPhone 15"], **london)
+        if engine == "camoufox":
+            from camoufox.async_api import AsyncCamoufox
+
+            headless = self.settings.get("camoufox_headless", True)
+            browser = await self.stack.enter_async_context(
+                AsyncCamoufox(headless=headless, locale="en-GB", os="windows", humanize=True))
+            return await browser.new_context(**london)
+        if engine in ("curl_ios", "curl_chrome", "jina"):
+            from curl_cffi.requests import AsyncSession
+
+            imp = {"curl_ios": "safari_ios", "curl_chrome": "chrome", "jina": "chrome"}[engine]
+            return await self.stack.enter_async_context(AsyncSession(impersonate=imp))
+        raise ValueError(f"unknown engine {engine!r}")
+
+    async def prepare(self, engine: str, setup: str | None):
+        """One-off session setup, e.g. giving Amazon a UK delivery postcode."""
+        if not setup or (engine, setup) in self.prepared:
+            return
+        ctx = await self.context(engine)
+        async with self.locks[engine]:
+            if (engine, setup) in self.prepared:
+                return
+            self.prepared.add((engine, setup))
+            if setup == "amazon_uk_postcode":
+                page = await ctx.new_page()
+                try:
+                    await page.goto("https://www.amazon.co.uk/", wait_until="domcontentloaded", timeout=45000)
+                    for sel in ("#sp-cc-accept", "input[name='accept']"):
+                        if await page.query_selector(sel):
+                            await page.click(sel)
+                            break
+                    await page.click("#nav-global-location-popover-link", timeout=10000)
+                    await page.fill("#GLUXZipUpdateInput", self.settings.get("postcode", "SW1A 1AA"), timeout=10000)
+                    await page.click("#GLUXZipUpdate input, #GLUXZipUpdate", timeout=10000)
+                    await page.wait_for_timeout(3000)
+                except Exception as exc:
+                    print(f"!! Amazon postcode setup failed: {exc}", file=sys.stderr)
+                finally:
+                    await page.close()
+
+    async def fetch(self, engine: str, url: str, price_selector: str | None = None) -> PageData:
+        timeout = self.settings.get("timeout", 45)
+        ctx = await self.context(engine)
+        if engine in HTML_ENGINES:
+            target, headers = url, {"Accept-Language": "en-GB,en;q=0.9"}
+            if engine == "jina":
+                target = "https://r.jina.ai/" + url
+                headers = {"X-Return-Format": "html"}
+                if os.environ.get("JINA_API_KEY"):
+                    headers["Authorization"] = f"Bearer {os.environ['JINA_API_KEY']}"
+            r = await ctx.get(target, headers=headers, timeout=timeout + 15)
+            return parse_html(r.status_code, r.text, url, price_selector)
+
         page = await ctx.new_page()
         try:
-            status_code = await load(page, url, settings.get("timeout", 45))
-            text = await page.inner_text("body")
-            title = await page.title()
-            blocks = await page.eval_on_selector_all(
-                'script[type="application/ld+json"]', "els => els.map(e => e.textContent)"
-            )
+            resp = await page.goto(url, wait_until="domcontentloaded", timeout=timeout * 1000)
+            try:
+                await page.wait_for_load_state("networkidle", timeout=8000)
+            except Exception:
+                pass  # many retail sites never go fully idle
+            await self._wait_out_challenge(page)
             buttons = 0
             for loc in await page.get_by_role("button", name=BUY_BUTTON).all():
                 try:
@@ -204,27 +387,82 @@ async def check_product(run: Run, ctx, retailer: dict, url: str, link_title: str
                         buttons += 1
                 except Exception:
                     pass
-        except Exception as exc:
-            res = Result(name, url, "error", link_title, reason=f"{type(exc).__name__}: {str(exc)[:120]}")
-            run.checked[url] = res
-            return res
+            price_text = ""
+            if price_selector:
+                el = await page.query_selector(price_selector)
+                price_text = (await el.inner_text()) if el else ""
+            return PageData(
+                status=resp.status if resp else None,
+                title=await page.title(),
+                text=await page.inner_text("body"),
+                ld_blocks=await page.eval_on_selector_all(
+                    'script[type="application/ld+json"]', "els => els.map(e => e.textContent)"),
+                buy_buttons=buttons,
+                links=await page.eval_on_selector_all("a[href]", LINKS_JS),
+                cards=await page.evaluate(CARDS_JS),
+                price_text=price_text,
+            )
         finally:
             await page.close()
 
-    avail, prices, product_name = parse_structured_data(blocks)
-    title = product_name or link_title or title
-    price = min(prices) if prices else None
+    async def _wait_out_challenge(self, page, max_secs: float | None = None):
+        """Give JavaScript anti-bot challenges time to finish and redirect."""
+        max_secs = max_secs if max_secs is not None else self.settings.get("challenge_wait", 20)
+        waited = 0.0
+        while waited < max_secs:
+            try:
+                title = (await page.title() or "").lower()
+            except Exception:
+                title = ""
+            if not any(t in title for t in CHALLENGE_TITLES):
+                return
+            await page.wait_for_timeout(2000)
+            waited += 2
 
-    if (status_code and status_code in (403, 429, 503)) or (
-        not avail and buttons == 0 and BLOCKED_TEXT.search(text[:5000])
-    ):
-        res = Result(name, url, "blocked", title, price, f"HTTP {status_code} / bot check")
+
+# --------------------------------------------------------------------------- checks
+
+def _error(name: str, url: str, exc: Exception, title: str = "") -> Result:
+    return Result(name, url, "error", title, reason=f"{type(exc).__name__}: {' '.join(str(exc).split())[:120]}")
+
+
+def _blocked(data: PageData) -> bool:
+    if data.status in (401, 403, 429, 503):
+        return True
+    if data.ld_blocks and parse_structured_data(data.ld_blocks)[0]:
+        return False
+    return data.buy_buttons == 0 and bool(BLOCKED_TEXT.search(data.title + "\n" + data.text[:5000]))
+
+
+async def check_product(run: Run, engines: Engines, retailer: dict, url: str, link_title: str = "") -> Result:
+    if url in run.checked:
+        return run.checked[url]
+    name, settings = retailer["name"], run.settings
+    engine = retailer.get("engine", settings.get("engine", "chromium"))
+    async with run.sem:
+        try:
+            await engines.prepare(engine, retailer.get("setup"))
+            data = await engines.fetch(engine, url, retailer.get("price_selector"))
+        except Exception as exc:
+            run.checked[url] = _error(name, url, exc, link_title)
+            return run.checked[url]
+
+    avail, prices, product_name = parse_structured_data(data.ld_blocks)
+    title = product_name or link_title or data.title
+    price = min(prices) if prices else _parse_price(data.price_text)
+
+    if _blocked(data):
+        res = Result(name, url, "blocked", title, price, f"HTTP {data.status} / bot check")
+    elif NOT_UK_TEXT.search(data.text[:20000]):
+        res = Result(name, url, "unknown", title, price, "site thinks we're outside the UK")
+    elif data.status and data.status >= 400:
+        res = Result(name, url, "error", title, price, f"HTTP {data.status} - product URL may have changed")
     else:
-        status, reason = decide(avail, buttons, text)
+        status, reason = decide(avail, data.buy_buttons, data.text)
         res = Result(name, url, status, title, price, reason)
         if status == "in_stock":
             req = retailer.get("require_text")
-            if req and req.lower() not in re.sub(r"\s+", " ", text).lower():
+            if req and req.lower() not in re.sub(r"\s+", " ", data.text).lower():
                 res.status, res.reason = "out_of_stock", f'in stock but "{req}" not on page'
             elif not price_ok(price, settings):
                 res.status, res.reason = "out_of_stock", f"in stock but price £{price:.2f} outside range"
@@ -232,26 +470,15 @@ async def check_product(run: Run, ctx, retailer: dict, url: str, link_title: str
     return res
 
 
-async def check_search(run: Run, ctx, retailer: dict) -> list[Result]:
-    settings = run.settings
-    url = retailer["url"]
+async def check_search(run: Run, engines: Engines, retailer: dict) -> list[Result]:
+    settings, url = run.settings, retailer["url"]
+    engine = retailer.get("engine", settings.get("engine", "chromium"))
     async with run.sem:
-        page = await ctx.new_page()
         try:
-            status_code = await load(page, url, settings.get("timeout", 45))
-            links = await page.eval_on_selector_all(
-                "a[href]",
-                """els => els.map(a => ({
-                    href: a.getAttribute('href'),
-                    text: (a.innerText || a.getAttribute('aria-label') || a.getAttribute('title')
-                           || (a.querySelector('img') && a.querySelector('img').alt) || '').trim()
-                }))""",
-            )
-            text = await page.inner_text("body")
+            await engines.prepare(engine, retailer.get("setup"))
+            data = await engines.fetch(engine, url)
         except Exception as exc:
-            return [Result(retailer["name"], url, "error", reason=f"{type(exc).__name__}: {str(exc)[:120]}")]
-        finally:
-            await page.close()
+            return [_error(retailer["name"], url, exc)]
 
     title_re = re.compile(settings["title_pattern"], re.I)
     exclude_re = re.compile(settings["exclude_pattern"], re.I)
@@ -259,8 +486,8 @@ async def check_search(run: Run, ctx, retailer: dict) -> list[Result]:
     base_host = urlsplit(url).netloc.removeprefix("www.")
 
     found: dict[str, str] = {}
-    for link in links:
-        href, label = link["href"] or "", " ".join(link["text"].split())
+    for link in data.links:
+        href, label = link["href"] or "", " ".join((link["text"] or "").split())
         if not href or href.startswith(("#", "javascript:", "mailto:")):
             continue
         if not title_re.search(label) or exclude_re.search(label):
@@ -275,14 +502,88 @@ async def check_search(run: Run, ctx, retailer: dict) -> list[Result]:
             break
 
     if not found:
-        if status_code in (403, 429, 503) or BLOCKED_TEXT.search(text[:5000]):
-            status, reason = "blocked", f"HTTP {status_code} / bot check"
-        elif status_code and status_code >= 400:
-            status, reason = "error", f"HTTP {status_code} - search URL may have changed"
+        if _blocked(data):
+            status, reason = "blocked", f"HTTP {data.status} / bot check"
+        elif data.status and data.status >= 400:
+            status, reason = "error", f"HTTP {data.status} - search URL may have changed"
         else:
             status, reason = "unknown", "no PS5 Pro listings found on search page"
         return [Result(retailer["name"], url, status, reason=reason)]
-    return list(await asyncio.gather(*(check_product(run, ctx, retailer, u, t) for u, t in found.items())))
+    return list(await asyncio.gather(*(check_product(run, engines, retailer, u, t) for u, t in found.items())))
+
+
+AFFILIATE_PARAMS = ("p", "u", "url", "ued", "murl", "destination")
+
+
+def real_link(hrefs: list[str], tracker_url: str) -> str:
+    """Pull the retailer's own URL out of a tracker's affiliate links."""
+    tracker_host = urlsplit(tracker_url).netloc
+    for h in hrefs:
+        q = parse_qs(urlsplit(h).query)
+        for k in AFFILIATE_PARAMS:
+            if q.get(k) and q[k][0].startswith("http"):
+                return unquote(q[k][0])
+        m = re.search(r"destination:(https?[^?#\s]+)", h) or re.search(r"/(https://www\.[^?#\s]+)", h)
+        if m:
+            return unquote(m.group(1))
+    for h in hrefs:
+        host = urlsplit(h).netloc
+        if host and host != tracker_host and not re.search(r"awin|anrdoezrs|pxf\.io|prf\.hn|pclick|skimresources", h):
+            return h
+    return tracker_url
+
+
+TRACKER_OUT = re.compile(r"\b(no stock|sold out|out of stock)\b", re.I)
+TRACKER_IN = re.compile(r"\b(in stock|pre-?order( available)?)\b", re.I)
+TRACKER_UNKNOWN = re.compile(r"check stock|tracking paused|paused", re.I)
+
+
+async def check_tracker(run: Run, engines: Engines, entry: dict) -> list[Result]:
+    """Read a stock-tracker site's table of retailers for the PS5 Pro."""
+    settings, url, source = run.settings, entry["url"], entry["name"]
+    engine = entry.get("engine", settings.get("engine", "chromium"))
+    async with run.sem:
+        try:
+            data = await engines.fetch(engine, url)
+        except Exception as exc:
+            return [_error(source, url, exc)]
+    if _blocked(data) and not data.cards:
+        return [Result(source, url, "blocked", reason=f"HTTP {data.status} / bot check")]
+
+    title_re = re.compile(settings["title_pattern"], re.I)
+    exclude_re = re.compile(settings["exclude_pattern"], re.I)
+    skip = {s.lower() for s in entry.get("exclude_retailers", [])}
+    results = []
+    for card in data.cards:
+        retailer, title = card["retailer"].strip(), " ".join(card["title"].split())
+        if not retailer or not title_re.search(title) or exclude_re.search(title) or retailer.lower() in skip:
+            continue
+        # Drop the product title so "£100 gift card" bundles aren't read as the price.
+        text = " ".join(card["text"].split()).replace(title, " ")
+        if TRACKER_OUT.search(text):
+            status, said = "out_of_stock", TRACKER_OUT.search(text).group(0)
+        elif TRACKER_IN.search(text):
+            status, said = "in_stock", TRACKER_IN.search(text).group(0)
+        elif TRACKER_UNKNOWN.search(text):
+            status, said = "unknown", TRACKER_UNKNOWN.search(text).group(0)
+        else:
+            continue  # not a retailer row (e.g. the site's own widgets)
+        price_m = re.search(r"£\s?(\d[\d,]*(?:\.\d\d)?)", text)
+        price = float(price_m.group(1).replace(",", "")) if price_m else None
+        link = real_link(card["hrefs"], url)
+        if "amazon." in link:
+            link = canonical_url(link, link)  # drop the tracker's affiliate tag
+        key = canonical_url(link, link) if link != url else f"{url}#{re.sub(r'[^a-z0-9]+', '-', (retailer + ' ' + title).lower())}"
+        res = Result(f"{retailer} (via {source})", link, status, title, price, f'{source} says "{said}"', key=key)
+        if status == "in_stock" and not price_ok(price, settings):
+            res.status, res.reason = "out_of_stock", f"{source} says in stock but price £{price:.2f} outside range"
+        results.append(res)
+    if not results:
+        return [Result(source, url, "unknown", reason="no PS5 Pro rows found - tracker page layout may have changed")]
+    return results
+
+
+STATUS_RANK = {"in_stock": 0, "out_of_stock": 1, "unknown": 2, "blocked": 3, "error": 4}
 
 
 async def check_all(config: dict, only: str | None) -> list[Result]:
@@ -291,39 +592,30 @@ async def check_all(config: dict, only: str | None) -> list[Result]:
     if only:
         retailers = [r for r in retailers if only.lower() in r["name"].lower()]
 
-    async with async_playwright() as pw:
-        browser = await pw.chromium.launch(
-            headless=True, args=["--disable-blink-features=AutomationControlled"]
-        )
-        ctx = await browser.new_context(
-            user_agent=USER_AGENT,
-            locale="en-GB",
-            timezone_id="Europe/London",
-            viewport={"width": 1366, "height": 900},
-            extra_http_headers={"Accept-Language": "en-GB,en;q=0.9"},
-        )
-        await ctx.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-        # Skip heavy assets - we only need the HTML/JS.
-        await ctx.route(
-            re.compile(r"\.(png|jpe?g|gif|webp|avif|svg|woff2?|ttf|mp4|webm)(\?|$)", re.I),
-            lambda route: route.abort(),
-        )
+    engines = Engines(run.settings)
 
-        async def one(r: dict) -> list[Result]:
-            if r.get("type", "product") == "search":
-                return await check_search(run, ctx, r)
-            return [await check_product(run, ctx, r, r["url"])]
+    async def one(r: dict) -> list[Result]:
+        kind = r.get("type", "product")
+        if kind == "tracker":
+            return await check_tracker(run, engines, r)
+        if kind == "search":
+            return await check_search(run, engines, r)
+        return [await check_product(run, engines, r, r["url"])]
 
+    try:
         nested = await asyncio.gather(*(one(r) for r in retailers))
-        await browser.close()
+    finally:
+        await engines.close()
 
-    # De-duplicate (the same product can be found by several entries).
-    seen, results = set(), []
+    # The same product can be found by several entries (e.g. a retailer check and a
+    # tracker). Keep the most useful answer for each: in stock beats out of stock
+    # beats unknown/blocked, so a blocked direct check never hides a tracker alert.
+    best: dict[str, Result] = {}
     for res in (r for group in nested for r in group):
-        if res.url not in seen:
-            seen.add(res.url)
-            results.append(res)
-    return results
+        cur = best.get(res.key)
+        if cur is None or STATUS_RANK[res.status] < STATUS_RANK[cur.status]:
+            best[res.key] = res
+    return list(best.values())
 
 
 # --------------------------------------------------------------------------- notifications
@@ -440,7 +732,7 @@ def find_alerts(results: list[Result], state: dict, remind_hours: float) -> list
     for r in results:
         if r.status not in ("in_stock", "out_of_stock"):
             continue
-        prev = products.get(r.url)
+        prev = products.get(r.key)
         if r.status == "out_of_stock":
             if prev and prev.get("in_stock"):
                 prev.update(in_stock=False, since=now.isoformat(timespec="minutes"))
@@ -454,7 +746,7 @@ def find_alerts(results: list[Result], state: dict, remind_hours: float) -> list
         )
         if due:
             alerts.append(r)
-            products[r.url] = {
+            products[r.key] = {
                 "retailer": r.retailer,
                 "title": r.title,
                 "in_stock": True,
