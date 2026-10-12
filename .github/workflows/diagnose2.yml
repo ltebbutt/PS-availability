@@ -1,0 +1,72 @@
+name: Scraping diagnostics round 2
+
+# Manual only. Harder techniques against the sites that blocked round 1.
+# Raw pages are saved to the `diag2-output` branch.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            methods: curl_ios,curl_android,translate,webkit_iphone,firefox_wait,patchright_wait,camoufox_wait,amazon_uk
+          - os: macos-latest
+            methods: curl_ios,webkit_iphone,firefox_wait,patchright_wait,camoufox_wait,amazon_uk
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 50
+    defaults:
+      run:
+        shell: bash
+        working-directory: diagnose
+    env:
+      DIAG_OUT: out-${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests curl_cffi playwright==1.56.0 patchright "camoufox[geoip]"
+      - name: Install browsers
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            python -m playwright install --with-deps firefox webkit
+            sudo apt-get install -y xvfb
+          else
+            python -m playwright install firefox webkit
+          fi
+          python -m camoufox fetch
+      - name: Probe (Linux, virtual display)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a -s "-screen 0 1366x900x24" python diagnose2.py --methods ${{ matrix.methods }}
+      - name: Probe
+        if: runner.os != 'Linux'
+        run: python diagnose2.py --methods ${{ matrix.methods }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: diag2-${{ matrix.os }}
+          path: diagnose/out-${{ matrix.os }}
+
+  publish:
+    needs: probe
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: diag
+      - name: Push results to the diag2-output branch
+        run: |
+          cd diag
+          git init -q -b diag2-output
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -qm "Scraping diagnostics round 2 ${{ github.run_id }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" diag2-output
