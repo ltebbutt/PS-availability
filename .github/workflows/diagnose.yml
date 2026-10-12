@@ -1,0 +1,74 @@
+name: Scraping diagnostics
+
+# Manual only. Tries every retailer with several scraping methods on Linux,
+# Windows and macOS runners and saves the raw pages to the `diag-output` branch.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            methods: requests,curl_chrome,curl_safari_ios,jina,pw_chromium_headless,pw_firefox_headless,pw_webkit_headless,chrome_headed,patchright_headed,camoufox
+          - os: windows-latest
+            methods: requests,curl_chrome,pw_chromium_headless,chrome_headed,patchright_headed
+          - os: macos-latest
+            methods: requests,curl_chrome,pw_chromium_headless,chrome_headed,patchright_headed
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+        working-directory: diagnose
+    env:
+      DIAG_OUT: out-${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests curl_cffi playwright==1.56.0 patchright "camoufox[geoip]"
+      - name: Install browsers (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          python -m playwright install --with-deps chromium firefox webkit
+          python -m camoufox fetch
+          sudo apt-get install -y xvfb
+      - name: Install browsers (Windows/macOS)
+        if: runner.os != 'Linux'
+        run: python -m playwright install chromium
+      - name: Probe (Linux, virtual display)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a -s "-screen 0 1366x900x24" python diagnose.py --methods ${{ matrix.methods }}
+      - name: Probe
+        if: runner.os != 'Linux'
+        run: python diagnose.py --methods ${{ matrix.methods }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: diag-${{ matrix.os }}
+          path: diagnose/out-${{ matrix.os }}
+
+  publish:
+    needs: probe
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: diag
+      - name: Push results to the diag-output branch
+        run: |
+          cd diag
+          git init -q -b diag-output
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -qm "Scraping diagnostics ${{ github.run_id }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" diag-output
