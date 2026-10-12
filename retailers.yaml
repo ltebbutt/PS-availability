@@ -7,9 +7,10 @@
 #   search   -> a search or category page. Every PS5 Pro console link on it is
 #               found and then checked like a product page, so new listings and
 #               bundles are picked up automatically.
-#   tracker  -> a stock-tracker site (StockInformer, Stock Goblin) that already
-#               watches many retailers - including ones that block GitHub, like
-#               Argos and Currys. Each retailer row on it becomes its own alert.
+#   tracker  -> a stock-tracker site (Stock Goblin) that already watches many
+#               retailers - including ones that block GitHub, like Currys and
+#               GAME. Each retailer row on it becomes its own alert, but a direct
+#               check of the same product always overrides it.
 #
 # engine: how the page is fetched. Different sites block different scrapers, so
 # each entry uses the one that got through in the diagnose/ workflow runs:
@@ -48,11 +49,9 @@ settings:
   postcode: SW1A 1AA
 
 retailers:
-  # ---------------- Stock trackers (cover Argos, Currys, GAME and others) ----------------
-  - name: StockInformer
-    type: tracker
-    url: https://www.stockinformer.co.uk/checker-playstation-5-pro-console
-    exclude_retailers: [StockX, eBay]
+  # ---------------- Stock tracker (covers Currys, GAME, ShopTo, Amazon) ----------------
+  # StockInformer was removed on 12 Oct 2026: it reported Box, GAME and Currys
+  # in stock when none of them were.
 
   - name: Stock Goblin
     type: tracker

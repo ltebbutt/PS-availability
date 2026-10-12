@@ -80,6 +80,7 @@ class Result:
     price: float | None = None
     reason: str = ""
     key: str = ""  # identity for alert state; defaults to the URL
+    source: str = "direct"  # "direct" = we read the retailer's own page; "tracker" = a third-party tracker said so
 
     def __post_init__(self):
         self.key = self.key or self.url
@@ -606,7 +607,8 @@ async def check_tracker(run: Run, engines: Engines, entry: dict) -> list[Result]
         if "amazon." in link:
             link = canonical_url(link, link)  # drop the tracker's affiliate tag
         key = canonical_url(link, link) if link != url else f"{url}#{re.sub(r'[^a-z0-9]+', '-', (retailer + ' ' + title).lower())}"
-        res = Result(f"{retailer} (via {source})", link, status, title, price, f'{source} says "{said}"', key=key)
+        res = Result(f"{retailer} (via {source})", link, status, title, price, f'{source} says "{said}"',
+                     key=key, source="tracker")
         if status == "in_stock" and not price_ok(price, settings):
             res.status, res.reason = "out_of_stock", f"{source} says in stock but price £{price:.2f} outside range"
         results.append(res)
@@ -653,6 +655,9 @@ async def check_all(config: dict, only: str | None) -> list[Result]:
 
 # --------------------------------------------------------------------------- notifications
 
+TRACKER_NOTE = " (reported by Stock Goblin, not confirmed on the retailer's own site)"
+
+
 def notify(alerts: list[Result], test: bool = False) -> list[str]:
     """Send alerts on every configured channel. Returns the channels that worked."""
     if test:
@@ -664,6 +669,7 @@ def notify(alerts: list[Result], test: bool = False) -> list[str]:
         lines = [
             f"{a.retailer}: {a.title or 'PS5 Pro'}"
             + (f" - £{a.price:.2f}" if a.price else "")
+            + (TRACKER_NOTE if a.source == "tracker" else "")
             + f"\n{a.url}"
             for a in alerts
         ]
@@ -693,7 +699,8 @@ def _ntfy(subject: str, body: str, alerts: list[Result], test: bool) -> bool:
         if a:
             h["Title"] = f"PS5 Pro in stock at {a.retailer}"
             h["Click"] = a.url
-            msg = (a.title or "PS5 Pro") + (f" - £{a.price:.2f}" if a.price else "")
+            msg = (a.title or "PS5 Pro") + (f" - £{a.price:.2f}" if a.price else "") \
+                + (TRACKER_NOTE if a.source == "tracker" else "")
         else:
             h["Title"] = subject
             msg = body
@@ -753,6 +760,11 @@ def save_state(state: dict) -> None:
     STATE_PATH.write_text(json.dumps(state, indent=2, sort_keys=True) + "\n")
 
 
+def _precedence(r: Result) -> tuple[int, int]:
+    definite = r.status in ("in_stock", "out_of_stock")
+    return (0 if (definite and r.source == "direct") else 1, STATUS_RANK[r.status])
+
+
 def find_alerts(results: list[Result], state: dict, remind_hours: float) -> list[Result]:
     """Update state and return results that should trigger an alert.
 
@@ -762,11 +774,13 @@ def find_alerts(results: list[Result], state: dict, remind_hours: float) -> list
     now = datetime.now(timezone.utc)
     products = state.setdefault("products", {})
     alerts = []
-    # One answer per product: in stock beats out of stock, so a blocked or stale
-    # direct check never hides a tracker that has seen stock (and vice versa).
+    # One answer per product. If we managed to read the retailer's own page, that
+    # answer wins - trackers can be stale or wrong. Only when the direct check was
+    # blocked (or there isn't one) does a tracker's answer count.
     best: dict[str, Result] = {}
     for r in results:
-        if r.key not in best or STATUS_RANK[r.status] < STATUS_RANK[best[r.key].status]:
+        cur = best.get(r.key)
+        if cur is None or _precedence(r) < _precedence(cur):
             best[r.key] = r
     for r in best.values():
         if r.status not in ("in_stock", "out_of_stock"):

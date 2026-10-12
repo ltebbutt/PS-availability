@@ -16,12 +16,13 @@ You can turn on any mix of these. You get one alert per restock, not one every
 
 Two kinds of source are checked every run:
 
-**1. Stock trackers.** [StockInformer](https://www.stockinformer.co.uk/checker-playstation-5-pro-console)
-and [Stock Goblin](https://www.stockgoblin.co.uk/products/playstation-5-pro-console)
-already monitor the big retailers from UK connections. Each retailer row on
-their pages becomes its own alert. This is how **Currys, Argos, GAME, ShopTo
-and Amazon** are covered, because those sites block or geo-restrict GitHub's
-US servers. Resale sites (StockX, eBay) are ignored.
+**1. A stock tracker.** [Stock Goblin](https://www.stockgoblin.co.uk/products/playstation-5-pro-console)
+monitors the big retailers from UK connections. It is used only for retailers we
+can't read directly (Currys, GAME, ShopTo, Amazon), and its alerts say
+*"reported by Stock Goblin, not confirmed on the retailer's own site"*. Whenever
+we *can* read the retailer's own page, that answer overrides the tracker.
+Resale sites (StockX, eBay) are ignored. (StockInformer was tried and removed:
+it reported Box, GAME and Currys in stock when they weren't.)
 
 **2. Direct checks of retailer sites.** Many UK retailers use anti-bot
 protection, so each site is fetched with the scraper that got through in
@@ -36,13 +37,13 @@ testing (see `diagnose/`):
 | John Lewis | Firefox | ✅ works (occasional connection drops) |
 | Tesco, Asda | Firefox | ⚠️ intermittent; neither sells the console online right now |
 | Costco | Chromium | ✅ loads; doesn't list the PS5 Pro right now |
-| Very, Littlewoods | iPhone WebKit / iPhone curl | ⚠️ intermittent; also covered by the trackers |
-| Argos | iPhone WebKit / Camoufox | ❌ usually blocked; trackers show its status |
-| Amazon | Camoufox | ❌ shows US availability; covered by the trackers |
+| Very, Littlewoods | iPhone WebKit / iPhone curl | ⚠️ usually redirected to the homepage (skipped) |
+| Argos | iPhone WebKit / Camoufox | ❌ blocked; Stock Goblin doesn't track it either |
+| Amazon | Camoufox | ❌ shows US availability; covered by Stock Goblin |
 | Scan | r.jina.ai reader | ⚠️ page loads but stock isn't readable yet |
 | Ebuyer | Firefox | ⚠️ search page loads, listings not picked up yet |
-| Currys, AO, Hughes | none worked | ❌ Currys covered by the trackers |
-| GAME, ShopTo | none worked | ❌ block non-UK visitors; covered by the trackers |
+| Currys, AO, Hughes | none worked | ❌ Currys covered by Stock Goblin |
+| GAME, ShopTo | none worked | ❌ block non-UK visitors; covered by Stock Goblin |
 
 A product counts as in stock if its structured data (`schema.org`) says so, or
 a clickable "Add to basket" button is showing. Out-of-stock wording counts
@@ -121,7 +122,7 @@ Check the summary now and then to see whether a retailer needs its URL updating.
   be faster.
 - **Some sites still block GitHub's servers** (see the table above). GitHub's
   runners are datacentre machines in the US, so Currys, Argos, GAME and ShopTo
-  refuse them or treat them as overseas visitors. The trackers cover those. For
+  refuse them or treat them as overseas visitors. Stock Goblin covers some of those. For
   direct checks of every site, run the workflow on a **self-hosted runner** at
   home: change `runs-on: ubuntu-latest` to `runs-on: self-hosted` and set up a
   runner on any always-on PC or Raspberry Pi
