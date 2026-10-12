@@ -5,6 +5,8 @@ on:
     # Every 5 minutes, offset from :00/:05 which GitHub's docs say are the most
     # congested slots. NOTE: scheduled runs execute as whoever last edited this
     # cron line, so it must be committed by the repo owner (not a bot/app).
+    # GitHub's scheduler is best-effort, so each run also queues the next one
+    # (see the last step); this schedule restarts that chain if it ever stops.
     - cron: "3-58/5 * * * *"
   workflow_dispatch:
     inputs:
@@ -17,13 +19,15 @@ on:
         type: boolean
         default: false
 
-# Never run two checks at once; a queued run waits for the current one.
+# Never run two checks at once. GitHub keeps at most one run waiting in this
+# group (a newer one replaces it), so the self-queuing below can't pile up.
 concurrency:
   group: ps5-stock-alert
   cancel-in-progress: false
 
 permissions:
   contents: write # to commit state.json so you only get alerted once per restock
+  actions: write # to queue the next check
 
 jobs:
   check:
@@ -42,6 +46,9 @@ jobs:
       TWILIO_FROM: ${{ secrets.TWILIO_FROM }}
       SMS_TO: ${{ secrets.SMS_TO }}
     steps:
+      - name: Note start time
+        run: echo "RUN_STARTED=$(date +%s)" >> "$GITHUB_ENV"
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
@@ -90,3 +97,13 @@ jobs:
             sleep $((i * 5))
           done
           exit 1
+
+      - name: Queue the next check in 5 minutes
+        # Runs even if a check failed, so one bad run never stops the chain.
+        if: ${{ always() && !inputs.test_notification && !inputs.dry_run && github.ref_name == 'main' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          wait=$(( 300 - ($(date +%s) - RUN_STARTED) ))
+          if [ "$wait" -gt 0 ]; then sleep "$wait"; fi
+          gh workflow run ps5-stock-alert.yml --repo "$GITHUB_REPOSITORY" --ref main
