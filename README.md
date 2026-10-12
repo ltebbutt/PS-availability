@@ -28,22 +28,21 @@ it reported Box, GAME and Currys in stock when they weren't.)
 protection, so each site is fetched with the scraper that got through in
 testing (see `diagnose/`):
 
-| Retailer | Method | Status from GitHub (Oct 2026) |
+| Retailer | Methods tried in order | Status from GitHub (Oct 2026) |
 |---|---|---|
+| Argos (and Sainsbury's) | iPhone curl → Camoufox → iPhone WebKit | ✅ reads Argos's own `globallyOutOfStock` flag when not blocked (varies by run) |
 | Smyths Toys | Camoufox (stealth Firefox) on a virtual screen | ✅ works |
-| Box | Firefox | ✅ works |
+| John Lewis | iPhone curl → Firefox → r.jina.ai reader | ✅ works |
+| Box | Firefox → iPhone curl | ✅ works |
 | EE | Chromium | ✅ works |
 | PlayStation Direct | Chromium | ✅ works |
-| John Lewis | Firefox | ✅ works (occasional connection drops) |
-| Tesco, Asda | Firefox | ⚠️ intermittent; neither sells the console online right now |
-| Costco | Chromium | ✅ loads; doesn't list the PS5 Pro right now |
-| Very, Littlewoods | iPhone WebKit / iPhone curl | ⚠️ usually redirected to the homepage (skipped) |
-| Argos | iPhone WebKit / Camoufox | ❌ blocked; Stock Goblin doesn't track it either |
-| Amazon | Camoufox | ❌ shows US availability; covered by Stock Goblin |
-| Scan | r.jina.ai reader | ⚠️ page loads but stock isn't readable yet |
-| Ebuyer | Firefox | ⚠️ search page loads, listings not picked up yet |
-| Currys, AO, Hughes | none worked | ❌ Currys covered by Stock Goblin |
-| GAME, ShopTo | none worked | ❌ block non-UK visitors; covered by Stock Goblin |
+| Very | iPhone curl → iPhone WebKit | ⚠️ works on some runs, blocked on others |
+| GAME | iPhone curl → Camoufox → Firefox | ⚠️ pages load; PS5 Pro listing not found yet |
+| Hughes | iPhone curl → Firefox → Camoufox | ⚠️ homepage loads, search often blocked |
+| Tesco, Asda, Costco, Ebuyer | various | ✅ load; none of them list the PS5 Pro right now |
+| Scan | r.jina.ai reader → Google Translate proxy | ⚠️ loads, but stock is added later by JavaScript |
+| Currys, Amazon, ShopTo | none worked directly | ❌ covered by Stock Goblin only |
+| Littlewoods, AO | none worked | ❌ blocked in every test |
 
 A product counts as in stock if its structured data (`schema.org`) says so, or
 a clickable "Add to basket" button is showing. Out-of-stock wording counts
@@ -117,9 +116,13 @@ Check the summary now and then to see whether a retailer needs its URL updating.
   unlimited Actions minutes. In a private repo, a run every 5 minutes would use
   up the 2,000 free minutes in about a week. Your secrets stay encrypted either
   way.
-- **GitHub's schedule is best-effort.** At busy times a "5 minute" schedule can
-  slip to 10–20 minutes. Bots on stock-tracking Discord servers will sometimes
-  be faster.
+- **How the 5-minute checks keep running.** GitHub's built-in schedule is
+  best-effort and can be late or skip runs, so each run also queues the next one
+  for 5 minutes after it started. The schedule is kept as a backup that restarts
+  the chain if it ever stops. GitHub never runs more than one check at a time
+  plus one waiting. Scheduled runs act as whoever last edited the `cron:` line,
+  so edit `.github/workflows/ps5-stock-alert.yml` from your own GitHub account
+  (e.g. in the web editor).
 - **Some sites still block GitHub's servers** (see the table above). GitHub's
   runners are datacentre machines in the US, so Currys, Argos, GAME and ShopTo
   refuse them or treat them as overseas visitors. Stock Goblin covers some of those. For

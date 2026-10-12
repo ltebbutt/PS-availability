@@ -13,9 +13,11 @@
 #               check of the same product always overrides it.
 #
 # engine: how the page is fetched. Different sites block different scrapers, so
-# each entry uses the one that got through in the diagnose/ workflow runs:
+# each entry uses the one(s) that got through in the diagnose/ workflow runs:
 #   chromium (default) | firefox | webkit_iphone | camoufox | curl_ios |
 #   curl_chrome | jina | translate
+# A list means "try these in order until one isn't blocked" - anti-bot systems
+# treat each GitHub runner's IP differently, so the winner varies run to run.
 #
 # Other optional keys:
 #   max_links:          how many matching links to follow from a search page (default 4)
@@ -85,7 +87,7 @@ retailers:
   - name: Argos (also Sainsbury's)
     type: product
     url: https://www.argos.co.uk/product/7797426
-    engine: curl_ios
+    engine: [curl_ios, camoufox, webkit_iphone]
     html_out_of_stock: '"globallyOutOfStock":true[^{}]{0,600}?"partNumber":"{id}"'
     html_in_stock: '"globallyOutOfStock":false[^{}]{0,600}?"partNumber":"{id}"'
 
@@ -93,7 +95,7 @@ retailers:
     type: search
     url: https://www.argos.co.uk/search/playstation-5-pro/
     link_pattern: '/product/\d+'
-    engine: curl_ios
+    engine: [curl_ios, camoufox]
     html_out_of_stock: '"globallyOutOfStock":true[^{}]{0,600}?"partNumber":"{id}"'
     html_in_stock: '"globallyOutOfStock":false[^{}]{0,600}?"partNumber":"{id}"'
 
@@ -122,7 +124,7 @@ retailers:
   - name: Very
     type: product
     url: https://www.very.co.uk/playstation-playstationreg5-pro-console-2tb-with-grand-theft-auto-v-amp-disc-drive/1601238401.prd
-    engine: curl_ios
+    engine: [curl_ios, webkit_iphone]
 
   # Littlewoods blocked every method in three rounds of testing.
   - name: Littlewoods
@@ -135,20 +137,25 @@ retailers:
   - name: John Lewis
     type: product
     url: https://www.johnlewis.com/playstation-5-pro-console-with-dualsense-controller/p114409149
-    engine: curl_ios
+    engine: [curl_ios, firefox, jina]
 
   - name: John Lewis
     type: search
     url: https://www.johnlewis.com/search?search-term=playstation%205%20pro%20console
     link_pattern: '/p\d+'
-    engine: jina
+    engine: [jina, camoufox]
 
   # ---------------- GAME ----------------
   # GAME's homepage and sections load; its PS5 section is /playstation/ps5.
   - name: GAME
     type: search
+    url: https://www.game.co.uk/searchresults?descriptionfilter=playstation+5+pro
+    engine: [curl_ios, camoufox, firefox]
+
+  - name: GAME
+    type: search
     url: https://www.game.co.uk/playstation/ps5
-    engine: curl_ios
+    engine: [curl_ios, camoufox, firefox]
 
   # ---------------- PlayStation Direct ----------------
   - name: PlayStation Direct
@@ -167,7 +174,7 @@ retailers:
   - name: Asda
     type: search
     url: https://www.asda.com/groceries/search/playstation%205%20pro
-    engine: firefox
+    engine: [firefox, camoufox]
 
   - name: Costco UK
     type: search
@@ -191,7 +198,7 @@ retailers:
     type: search
     url: https://www.scan.co.uk/search?q=playstation+5+pro+console
     link_pattern: '/products/'
-    engine: jina
+    engine: [jina, translate]
 
   # ShopTo shows "Not available in your country" to GitHub's US servers; covered by the trackers.
   - name: ShopTo
@@ -203,12 +210,12 @@ retailers:
   - name: Box
     type: product
     url: https://box.co.uk/p5hehwsny59577-sony-playstation-5-pro-console
-    engine: firefox
+    engine: [firefox, curl_ios]
 
   - name: Hughes
     type: search
     url: https://www.hughes.co.uk/search?search=playstation+5+pro
-    engine: curl_ios
+    engine: [curl_ios, firefox, camoufox]
 
   # AO (Cloudflare) blocked every method in three rounds; it doesn't list the console.
   - name: AO.com

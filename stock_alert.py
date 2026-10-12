@@ -464,6 +464,32 @@ def _blocked(data: PageData) -> bool:
     return data.buy_buttons == 0 and bool(BLOCKED_TEXT.search(data.title + "\n" + data.text[:5000]))
 
 
+def _engines_for(retailer: dict, settings: dict) -> list[str]:
+    engine = retailer.get("engine", settings.get("engine", "chromium"))
+    return engine if isinstance(engine, list) else [engine]
+
+
+async def _fetch_with_fallback(engines: Engines, retailer: dict, settings: dict, url: str,
+                               price_selector: str | None = None) -> PageData:
+    """Try each of the retailer's engines in turn until one isn't blocked.
+
+    Anti-bot systems judge each GitHub runner's IP differently, so a method that
+    is blocked on one run often works on the next - and vice versa."""
+    last_exc, data = None, None
+    for engine in _engines_for(retailer, settings):
+        try:
+            await engines.prepare(engine, retailer.get("setup"))
+            data = await engines.fetch(engine, url, price_selector)
+        except Exception as exc:
+            last_exc = exc
+            continue
+        if not _blocked(data) and not NOT_IN_COUNTRY.search(data.title + "\n" + data.text[:3000]):
+            return data
+    if data is not None:
+        return data
+    raise last_exc
+
+
 def _stock_flag(retailer: dict, url: str, html: str) -> str | None:
     """Retailer-specific stock flags in the page source, e.g. Argos's
     "globallyOutOfStock". "{id}" in the pattern is replaced by the product number
@@ -481,11 +507,9 @@ async def check_product(run: Run, engines: Engines, retailer: dict, url: str, li
     if url in run.checked:
         return run.checked[url]
     name, settings = retailer["name"], run.settings
-    engine = retailer.get("engine", settings.get("engine", "chromium"))
     async with run.sem:
         try:
-            await engines.prepare(engine, retailer.get("setup"))
-            data = await engines.fetch(engine, url, retailer.get("price_selector"))
+            data = await _fetch_with_fallback(engines, retailer, settings, url, retailer.get("price_selector"))
         except Exception as exc:
             run.checked[url] = _error(name, url, exc, link_title)
             return run.checked[url]
@@ -525,11 +549,9 @@ async def check_product(run: Run, engines: Engines, retailer: dict, url: str, li
 
 async def check_search(run: Run, engines: Engines, retailer: dict) -> list[Result]:
     settings, url = run.settings, retailer["url"]
-    engine = retailer.get("engine", settings.get("engine", "chromium"))
     async with run.sem:
         try:
-            await engines.prepare(engine, retailer.get("setup"))
-            data = await engines.fetch(engine, url)
+            data = await _fetch_with_fallback(engines, retailer, settings, url)
         except Exception as exc:
             return [_error(retailer["name"], url, exc)]
 
