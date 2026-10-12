@@ -1,4 +1,33 @@
 {
   "heartbeat": "2026-10-12T19:02+00:00",
-  "products": {}
+  "products": {
+    "https://box.co.uk/ps5-consoles": {
+      "in_stock": true,
+      "last_alert": "2026-10-12T19:58+00:00",
+      "retailer": "Box (via StockInformer)",
+      "since": "2026-10-12T19:58+00:00",
+      "title": "PS5 Pro Console (Various Bundles)"
+    },
+    "https://www.amazon.co.uk/dp/B0DJH2NS6R": {
+      "in_stock": true,
+      "last_alert": "2026-10-12T19:58+00:00",
+      "retailer": "Amazon (via Stock Goblin)",
+      "since": "2026-10-12T19:58+00:00",
+      "title": "PlayStation 5 Pro Console"
+    },
+    "https://www.currys.co.uk/products/sony-playstation-5-pro-10272138.html": {
+      "in_stock": true,
+      "last_alert": "2026-10-12T19:58+00:00",
+      "retailer": "Currys (via StockInformer)",
+      "since": "2026-10-12T19:58+00:00",
+      "title": "PS5 Pro Console"
+    },
+    "https://www.game.co.uk/en/playstation/consoles/ps5/": {
+      "in_stock": true,
+      "last_alert": "2026-10-12T19:58+00:00",
+      "retailer": "Game (via StockInformer)",
+      "since": "2026-10-12T19:58+00:00",
+      "title": "PS5 Pro Console"
+    }
+  }
 }
