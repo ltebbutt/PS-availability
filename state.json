@@ -2,10 +2,10 @@
   "heartbeat": "2026-10-12T19:02+00:00",
   "products": {
     "https://shop.ee.co.uk/products/playstation-5-pro-with-x2-playstation-gift-cards": {
-      "in_stock": false,
-      "last_alert": "2026-10-16T06:06+00:00",
+      "in_stock": true,
+      "last_alert": "2026-10-16T06:36+00:00",
       "retailer": "EE",
-      "since": "2026-10-16T06:32+00:00",
+      "since": "2026-10-16T06:36+00:00",
       "title": "PlayStation\u00ae5 Pro with \u00a3100 PS\u00ae Gift Card to pre-order GTAVI"
     },
     "https://www.amazon.co.uk/dp/B0DJH2NS6R": {
